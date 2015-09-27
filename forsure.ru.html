@@ -1,0 +1,250 @@
+Пожалуйста, проверьте Ваши данные:<br>
+(Особенно убедитесь в правильности электронного адреса!)
+<br clear="all"><br>
+
+<form name="f1" action="winter.php" enctype="multipart/form-data"
+	method="post" style="margins: 0;" >
+<input type="hidden" name="sure" value="1" ID="Hidden4">
+<input type="hidden" name="form" value="1" ID="Hidden6">
+<input type="hidden" id="is_upd_trnsact" value="<?=$_SESSION['is_upd_trnsact']?>">
+
+<style>
+label { display: block; width: 420px; height: 21px; }
+label.sex { display: inline; }
+em { color: red; }
+span { display: block; float: left; width: 180px; text-align: right; padding-right: 6px; }
+span.sex { display: block; float: left; text-align: left; height: 25px;}
+input.fo { display: block; float: left; text-align: left;  }
+input.box { border: none; }
+</style>
+
+<label for="f_email">
+<span><em>*</em> Ваш e-mail:</span>
+<input type="hidden" name="f_email" id="f_email" value="<?=$_SESSION[f_email]?>">
+<?=htmlspecialchars(stripslashes($_SESSION[f_email]))?>
+</label>
+
+<label for="f_lastname">
+<span><em>*</em> Фамилия:</span>
+	<input type="hidden" name="f_lastname" value="<?=htmlspecialchars(stripslashes($_SESSION[f_lastname]))?>" ID="f_lastname">
+	<?=htmlspecialchars(stripslashes($_SESSION[f_lastname]))?>
+</label>
+
+<label for="f_name">
+<span><em>*</em> Имя:</span>
+	<input type="hidden" id="f_name" name="f_name" value="<?=htmlspecialchars(stripslashes($_SESSION[f_name]))?>">
+	<?=htmlspecialchars(stripslashes($_SESSION[f_name]))?>
+</label>
+
+<label for="f_midname">
+<span><em>*</em> Отчество:</span>
+	<input type="hidden" id="f_midname" name="f_midname"
+	value="<?=htmlspecialchars(stripslashes($_SESSION[f_midname]))?>">
+	<?=htmlspecialchars(stripslashes($_SESSION[f_midname]))?>
+</label>
+
+<label for="f_phone_m">
+<span>Мобильный:</span>
+	<input type="hidden" id="f_phone_m" name="f_phone_m" value="<?=htmlspecialchars(stripslashes($_SESSION[f_phone_m]))?>">
+	<?=htmlspecialchars(stripslashes($_SESSION[f_phone_m]))?>
+</label>
+
+<label for="f_ning">
+<span>Дополнительный контакт:</span>
+<input type="hidden" name="f_ning_profile" id="f_ning" value="<?=$_SESSION[f_ning_profile]?>">
+  <?=htmlspecialchars(stripslashes($_SESSION[f_ning_profile]))?>
+</label>
+
+
+<br clear=all>
+
+<label for="f_birthdate">
+	<span><em>*</em> Дата рождения:</span>
+		<?=$_SESSION[f_birthdate_d].".".$_SESSION[f_birthdate_m].".".$_SESSION[f_birthdate_y]?>
+		<input type="hidden" name="f_birthdate_d" value="<?=$_SESSION[f_birthdate_d]?>" ID="Hidden1">
+		<input type="hidden" name="f_birthdate_m" value="<?=$_SESSION[f_birthdate_m]?>" ID="Hidden2">
+		<input type="hidden" name="f_birthdate_y" value="<?=$_SESSION[f_birthdate_y]?>" ID="Hidden3">
+</label>
+
+<fieldset style="padding:7px; ">
+	<legend><em>*</em>Паспортные данные</legend>
+
+	<label for="f_passport_type">
+		<span>Тип паспорта:</span>
+		<input type="hidden" name="f_passport_type"
+			value="<?=$_SESSION[f_passport_type]?>" />
+		<?=(
+			$_SESSION[f_passport_type] == "RF" ? "Российский общегражданский" :
+			($_SESSION[f_passport_type] == "ZGP" ? "Загран паспорт" :
+			($_SESSION[f_passport_type] == "nonRF" ? "не Российский" : "другой документ"))
+		)?>
+	</label>
+
+	<label for="f_citizen">
+    	<span>Гражданство</span>
+        	<input type="hidden" id="f_citizen"
+			name="f_citizen" value="<?=htmlspecialchars(stripslashes($_SESSION[f_citizen]))?>" >
+			<?=htmlspecialchars(stripslashes($_SESSION[f_citizen]))?>
+	</label>
+
+	<label for="f_passport">
+		<span> Паспорт:</span>
+		<input type="hidden" id="f_passport"
+			name="f_passport" value="<?=htmlspecialchars(stripslashes($_SESSION[f_passport]))?>" >
+		<?=htmlspecialchars(stripslashes($_SESSION[f_passport]))?>
+	</label>
+	<label for="f_passport_d">
+		<span> Дата выдачи паспорта:</span>
+		<?=$_SESSION[f_passport_d].".".$_SESSION[f_passport_m].".".$_SESSION[f_passport_y]?>
+		<input type="hidden" name="f_passport_d" value="<?=$_SESSION[f_passport_d]?>" ID="Hidden5">
+		<input type="hidden" name="f_passport_m" value="<?=$_SESSION[f_passport_m]?>" ID="Hidden8">
+		<input type="hidden" name="f_passport_y" value="<?=$_SESSION[f_passport_y]?>" ID="Hidden9">
+	</label>
+	<label for="f_passport_place" id="passport">
+		<span> Кем выдан:</span>
+		<input type="hidden" id="f_passport_place"
+			name="f_passport_place" value="<?=htmlspecialchars(stripslashes($_SESSION[f_passport_place]))?>" >
+		<?=htmlspecialchars(stripslashes($_SESSION[f_passport_place]))?>
+	</label>
+	<label for="f_passport_organ">
+		<span> Код подразделения:</span>
+		<input type="hidden" id="f_passport_organ"
+			name="f_passport_organ" value="<?=htmlspecialchars(stripslashes($_SESSION[f_passport_organ]))?>" >
+		<?=htmlspecialchars(stripslashes($_SESSION[f_passport_organ]))?>
+	</label>
+
+</fieldset>
+
+<fieldset style="padding:7px; ">
+	<legend><em>*</em> Постоянное проживание либо регистрация</legend>
+
+	<label for="f_country">
+		<span> Страна: </span>
+		<input id="f_country" name="f_country" type="hidden"
+			value="<?=htmlspecialchars(stripslashes($_SESSION[f_country]))?>" maxlength="255">
+		<?=htmlspecialchars(stripslashes($_SESSION[f_country]))?>
+	</label>
+	<label for="f_town">
+		<span> Город: </span>
+		<input id="f_town" name="f_town" type="hidden"
+			value="<?=htmlspecialchars(stripslashes($_SESSION[f_town]))?>" maxlength="255">
+		<?=htmlspecialchars(stripslashes($_SESSION[f_town]))?>
+	</label>
+	<label for="f_address">
+		<span> Адрес:<br></span>
+		<input id="f_address" name="f_address" type="hidden"
+			value="<?=htmlspecialchars(stripslashes($_SESSION[f_address]))?>" maxlength="255" />
+		<?=htmlspecialchars(stripslashes($_SESSION[f_address]))?>
+	</label>
+
+</fieldset>
+
+<? //$f_total_sum = $_SESSION['f_total']; ?>
+<fieldset style="padding:7px; ">
+	<legend><em>*</em> Поездка</legend>
+<div>
+            <div style="display: inline-block; float: left; width: 410px!important;">     
+<? if ( "1" === $_SESSION[f_trip_1] ) { ?>
+	<label for="trip1">
+	<input type="hidden" id="trip1" name="f_trip_1" value="1">
+	Участок <?=$GLOBALS['f_trip_names'][0]?>.</label>
+<?		
+	} ?>
+    
+<? if ( "1" === $_SESSION[f_trip_2] ) { ?>
+	<input type="hidden" id="trip2" name="f_trip_2" value="1">
+<?		
+	} ?>    
+
+<? if ( "1" === $_SESSION[f_trip_3] ) { ?>
+	<label for="trip3">
+	<input type="hidden" id="trip3" name="f_trip_3" value="1">
+	Участок <?=$GLOBALS['f_trip_names'][2]?>.</label>
+<?	
+	} ?>
+
+<? if ( "1" === $_SESSION[f_trip_4] ) { ?>
+	<input type="hidden" id="trip4" name="f_trip_4" value="1">
+<?		
+	} ?>    
+
+<? if ( "1" === $_SESSION[f_trip_5] ) { ?>
+	<label for="trip5">
+	<input type="hidden" id="trip5" name="f_trip_5" value="1">
+	Участок <?=$GLOBALS['f_trip_names'][4]?>.</label>
+<?		
+	} ?>
+    
+<? if ( "1" === $_SESSION[f_trip_6] ) { ?>
+	<input type="hidden" id="trip6" name="f_trip_6" value="1">
+<?		
+	} ?>        
+    
+    
+<? if ( "1" === $_SESSION[f_trip_7] ) { ?>
+	<label for="trip7">
+	<input type="hidden" id="trip7" name="f_trip_7" value="1">
+	Участок <?=$GLOBALS['f_trip_names'][6]?>.</label>
+<?		
+	} ?>  
+        
+<? if ( "1" === $_SESSION[f_trip_8] ) { ?>
+	<input type="hidden" id="trip8" name="f_trip_8" value="1">
+<?		
+	} ?>            
+
+<? if ( "1" === $_SESSION[f_trip_9] ) { ?>
+	<label for="trip9">
+	<input type="hidden" id="trip9" name="f_trip_9" value="1">
+	Участок <?=$GLOBALS['f_trip_names'][8]?>.</label>
+<?		//$f_total_sum += $GLOBALS['f_trip_rur'][4];
+	} ?>   
+
+    
+	<label for="total"><input type="hidden" id="total" name="f_total" value="<?=$_SESSION[f_total]?>" >Всего: <?= $_SESSION['f_total']?> руб.</label>
+    
+      </div>
+        <div style="display: inline-block; float: right; width: 60px!important;">
+        <? if ( "1" === $_SESSION[f_coupe_ch] ) {?>
+            <label for="f_coupe_ch">
+                <input type="hidden" id="f_coupe_ch" name="f_coupe_ch" value="1" >   
+                купейное<br /> место
+                </label> <?}else{ ?><label for="coupe_ch">
+                <input type="hidden" id="f_coupe_ch" name="f_coupe_ch" value="0" >   
+                плацкарт
+                </label><? } ?>   
+        </div>
+    </div> 
+</fieldset>
+
+
+
+<br clear="all">
+<label class="sex">
+	Способ оплаты:<br>
+	<input type="hidden" value="<?=addslashes($_SESSION[f_payment_way])?>" name="f_payment_way" />
+	<input type="hidden" value="<?=$_SESSION[f_payment_way_select]?>" name="f_payment_way_select" />
+	<b><?=	(
+			$_SESSION[f_payment_way_select] == "sberbank" ? "Перевод (сбербанк)" :
+			( $_SESSION[f_payment_way_select] == "other" ? $_SESSION[f_payment_way] : "Из рук в руки" )
+			)
+		?></b>
+</label><br clear=all>
+
+<br clear="all">
+<label class="sex" for="f_comments">
+	Комментарии:<br>
+	<br clear="all">
+	<textarea style="display: none;" name="f_comments"
+		id="f_comments" ><?=htmlspecialchars(stripslashes($_SESSION[f_comments]))?></textarea>
+	<b><?=htmlspecialchars(stripslashes($_SESSION[f_comments]))?></b>
+</label>
+
+<br clear=all>
+<br clear="all">
+<input type="submit" value="Все правильно, дальше!">
+</form>
+
+<form action="winter.php" method="get" style="display: block; width: 70px; float: left;" >
+<input type="hidden" name="anthr_reg" value="No" />
+<input type="submit" value="Исправить данные." >

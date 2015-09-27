@@ -1,0 +1,432 @@
+<?
+$get_key=secure_get($_GET['key']);
+$get_id=secure_get($_GET['id']);
+
+if (!isset($_POST['f_birthdate_y'])&&!isset($_SESSION['f_birthdate_y'])){$_SESSION['f_birthdate_y'] = 2000;}
+
+
+
+// Если он их уже отправляет - то либо найдем ошибки и пошлем его заново вбивать данные,
+// либо спросим - точно ли он уверен, что данные верны,
+// либо запись в БД и отправим все организаторам.
+
+if ($_POST['form']) {
+
+	GetFormData();
+
+	$GLOBALS['error_titles'] = array();
+	Validate();
+
+	if ( count($GLOBALS['error_titles']) > 0 ) {
+
+		// покажем ошибки и снова попросим заполнить форму
+	    $_SESSION['system_message'] = "<font color='red'>".join("<br>", $GLOBALS['error_titles'])."</font>";
+         $_SESSION['anthr_reg']="No";
+	} else if ($_POST['sure']) { // уже надо все добавлять в БД
+
+		// подсчитаем сумму
+		$f_total_sum = $_SESSION['f_total'];
+	
+		// удалим символы перехода на новую строку в многострочных полях:
+		$_SESSION[f_work_address] = strtr($_SESSION[f_work_address], "\n", " ");
+		$_SESSION[f_comments] = strtr($_SESSION[f_comments], "\n", " ");
+         //если это апдейт - апдейтим
+        if($_SESSION['is_upd_trnsact']==="yes_OK"){
+            $q_str="UPDATE `wt_$glob_year`
+            SET
+				`name` = '".addslashes($_SESSION[f_name])."',
+				`midname` = '".addslashes($_SESSION[f_midname])."',
+				`lastname` = '".addslashes($_SESSION[f_lastname])."',
+				`initials` = '".substr($_SESSION[f_name], 0, 1).".".substr($_SESSION[f_midname], 0, 1).".',
+				`email` = '$_SESSION[f_email]',
+				`birthdate` = '$_SESSION[f_birthdate_y]-$_SESSION[f_birthdate_m]-$_SESSION[f_birthdate_d]',
+				`phone_m` = '".addslashes($_SESSION[f_phone_m])."',
+				`address` = '".addslashes($_SESSION[f_address])."',
+				`town` = '".addslashes($_SESSION[f_town])."',
+				`country` = '".addslashes($_SESSION[f_country])."',
+				`citizenship` = '".addslashes($_SESSION[f_citizen])."',
+				`passport`  = '".addslashes($_SESSION[f_passport])."',
+				`passport_date` = '$_SESSION[f_passport_y]-$_SESSION[f_passport_m]-$_SESSION[f_passport_d]',
+				`passport_place` = '".addslashes($_SESSION[f_passport_place])."',
+				`passport_expire` = '$_SESSION[f_passport_end_y]-$_SESSION[f_passport_end_m]-$_SESSION[f_passport_end_d]',
+				`visa` = '".addslashes($_SESSION[f_visa])."',
+				`visa_date` = '$_SESSION[f_visa_y]-$_SESSION[f_visa_m]-$_SESSION[f_visa_d]',
+				`visa_end_date` = '$_SESSION[f_visa_end_y]-$_SESSION[f_visa_end_m]-$_SESSION[f_visa_end_d]',
+				`get_visa_country` = '".addslashes($_SESSION[f_visa_country])."',
+				`get_visa_city`  = '".addslashes($_SESSION[f_visa_city])."',
+				`eng` = '1',
+				`sex` = '".("M" === $_SESSION[f_sex] ? "M" : "F")."',
+				`nation` = '".addslashes($_SESSION[f_nation])."',
+				`birth_country` = '".addslashes($_SESSION[f_birth_country])."',
+				`birth_place` = '".addslashes($_SESSION[f_birth_place])."',
+				`work_place` = '".addslashes($_SESSION[f_work_firm])."',
+				`work_position` = '".addslashes($_SESSION[f_work_position])."',
+				`work_address` = '".addslashes($_SESSION[f_work_address])."',
+				`accomp_children` = '$_SESSION[f_children]',
+				`entry_in_russia` = '$_SESSION[f_entry_inrussia_y]-$_SESSION[f_entry_inrussia_m]-$_SESSION[f_entry_inrussia_d]',
+				`period` = '$_SESSION[f_russia_period]',
+				`visit_1` = '".("1" === $_SESSION[f_trip_1] ? "1" : "0")."',
+				`visit_2` = '".("1" === $_SESSION[f_trip_2] ? "1" : "0")."',
+				`visit_3` = '".("1" === $_SESSION[f_trip_3] ? "1" : "0")."',
+				`visit_4` = '".("1" === $_SESSION[f_trip_4] ? "1" : "0")."',
+				`visit_5` = '".("1" === $_SESSION[f_trip_5] ? "1" : "0")."',
+				`visit_6` = '".("1" === $_SESSION[f_trip_6] ? "1" : "0")."',
+				`visit_7` = '".("1" === $_SESSION[f_trip_7] ? "1" : "0")."',
+				`visit_8` = '".("1" === $_SESSION[f_trip_8] ? "1" : "0")."',
+				`visit_9` = '".("1" === $_SESSION[f_trip_9] ? "1" : "0")."',
+              
+                `coupe`   = '".("1" === $_SESSION[f_coupe_ch] ? "1" : "0")."',
+				`payment_select` = '$_SESSION[f_payment_way_select]',
+				`payment` = '".addslashes($_SESSION[f_payment_way])."',
+				`total_sum` = '". $_SESSION[f_total]."',
+				`ning_profile` = '".addslashes($_SESSION[f_ning_profile])."',
+				`comments` = '".addslashes(str_replace("\n"," ",str_replace("\r"," ",$_SESSION[f_comments])))."'
+                WHERE `wt_{$glob_year}_id`=$_SESSION[f_id]";
+                
+				$tresult = mysql_query($q_str) or die("MySQL error: ".mysql_error());
+                
+             
+        }
+		//иначе добавим новую запись в БД
+		else{
+		// добавим запись в БД
+		$tresult = mysql_query("INSERT INTO
+									`wt_$glob_year`
+								SET
+									`name` = '".addslashes($_SESSION[f_name])."',
+									`lastname` = '".addslashes($_SESSION[f_lastname])."',
+									`initials` = '".substr($_SESSION[f_name], 0, 1).".',
+									`email` = '$_SESSION[f_email]',
+									`birthdate` = '$_SESSION[f_birthdate_y]-$_SESSION[f_birthdate_m]-$_SESSION[f_birthdate_d]',
+									`phone_m` = '".addslashes($_SESSION[f_phone_m])."',
+									`address` = '".addslashes($_SESSION[f_address])."',
+									`town` = '".addslashes($_SESSION[f_town])."',
+									`country` = '".addslashes($_SESSION[f_country])."',
+									`citizenship` = '".addslashes($_SESSION[f_citizen])."',
+									`passport`  = '".addslashes($_SESSION[f_passport])."',
+									`passport_date` = '$_SESSION[f_passport_y]-$_SESSION[f_passport_m]-$_SESSION[f_passport_d]',
+									`passport_place` = '".addslashes($_SESSION[f_passport_place])."',
+									`passport_expire` = '$_SESSION[f_passport_end_y]-$_SESSION[f_passport_end_m]-$_SESSION[f_passport_end_d]',
+									`visa` = '".addslashes($_SESSION[f_visa])."',
+									`visa_date` = '$_SESSION[f_visa_y]-$_SESSION[f_visa_m]-$_SESSION[f_visa_d]',
+									`visa_end_date` = '$_SESSION[f_visa_end_y]-$_SESSION[f_visa_end_m]-$_SESSION[f_visa_end_d]',
+									`get_visa_country` = '".addslashes($_SESSION[f_visa_country])."',
+									`get_visa_city`  = '".addslashes($_SESSION[f_visa_city])."',
+									`eng` = '1',
+									`sex` = '".("M" == $_SESSION[f_sex] ? "M" : "F")."',
+									`nation` = '".addslashes($_SESSION[f_nation])."',
+									`birth_country` = '".addslashes($_SESSION[f_birth_country])."',
+									`birth_place` = '".addslashes($_SESSION[f_birth_place])."',
+									`work_place` = '".addslashes($_SESSION[f_work_firm])."',
+									`work_position` = '".addslashes($_SESSION[f_work_position])."',
+									`work_address` = '".addslashes($_SESSION[f_work_address])."',
+									`accomp_children` = '$_SESSION[f_children]',
+									`entry_in_russia` = '$_SESSION[f_entry_inrussia_y]-$_SESSION[f_entry_inrussia_m]-$_SESSION[f_entry_inrussia_d]',
+									`period` = '$_SESSION[f_russia_period]',
+									`visit_1` = '".("1" === $_SESSION[f_trip_1] ? "1" : "0")."',
+									`visit_2` = '".("1" === $_SESSION[f_trip_2] ? "1" : "0")."',
+									`visit_3` = '".("1" === $_SESSION[f_trip_3] ? "1" : "0")."',
+									`visit_4` = '".("1" === $_SESSION[f_trip_4] ? "1" : "0")."',
+                                    `visit_5` = '".("1" === $_SESSION[f_trip_5] ? "1" : "0")."',
+                    				`visit_6` = '".("1" === $_SESSION[f_trip_6] ? "1" : "0")."',
+                    				`visit_7` = '".("1" === $_SESSION[f_trip_7] ? "1" : "0")."',
+                    				`visit_8` = '".("1" === $_SESSION[f_trip_8] ? "1" : "0")."',
+                    				`visit_9` = '".("1" === $_SESSION[f_trip_9] ? "1" : "0")."',
+                          
+                                    `coupe`   = '".("1" === $_SESSION[f_coupe_ch] ? "1" : "0")."',
+									`payment_select` = '$_SESSION[f_payment_way_select]',
+									`payment` = '".addslashes($_SESSION[f_payment_way])."',
+									`total_sum` = '". $_SESSION[f_total]."',
+									`ning_profile` = '".addslashes($_SESSION[f_ning_profile])."',
+									`comments` = '".addslashes(str_replace("\n"," ",$_SESSION[f_comments]))."'"
+									) or die("MySQL error: ".mysql_error());
+
+		// получим новый ID:
+		$_SESSION[f_id] = mysql_insert_id();
+
+		// подпишем чела на рассылку wt{$glob_YY}e_reg@buddhism.ru:
+		// OK, both reset, put the applicant onto the mailing list
+		$sth = mysql_query( "INSERT INTO wt{$glob_YY}e_reg (hash, address)
+            				VALUES (" . ezmlm_hash($_SESSION[f_email]) .  ", '$_SESSION[f_email]' ) ", $qmail_link ) or
+ 			die("MySQL Error: ".mysql_error()." <br/>File: ".__FILE__.", line: ".__LINE__);
+        }
+		// письмо организаторам
+		include("email-org.php.eng");
+		$res = @email($mail_email, $mail_subj, $mail_body, $org_email);
+
+		// письмо зарегистрировавшемуся человеку
+		include("email-man.php.eng");
+		$res = @email($mail_email, $mail_subj, $mail_body, $org_email);
+
+		$_SESSION['system_message'] = "Your data sent to organizers. Thank you!";
+		include("thanks.eng.html");
+		exit(0);
+
+	} else { // ошибок нет, но надо показать ему промежуточную форму для подтверждения:
+		include("forsure.eng.html");
+		exit(0);
+	}
+}
+else
+
+{
+   
+//если есть переменные $_get, то выбираем из таблицы запись и проверяем хеш
+// Если хеш совпадает, то заполняем переменные сессии данными из таблицы
+
+    if ($get_key!==""&&$get_id!==""){
+       
+        $q_str="SELECT 
+                    name, midname, lastname, email, phone_m,
+    				DATE_FORMAT(birthdate, '%e') birthdate_d,
+    				DATE_FORMAT(birthdate, '%c') birthdate_m,
+    				DATE_FORMAT(birthdate, '%Y') birthdate_y,
+    				passport_type, passport,passport_place, 
+    				DATE_FORMAT(passport_date, '%e') passport_d,
+    				DATE_FORMAT(passport_date, '%c') passport_m,
+    				DATE_FORMAT(passport_date, '%Y') passport_y,
+                    DATE_FORMAT(passport_expire, '%e') passport_end_d,
+    				DATE_FORMAT(passport_expire, '%c') passport_end_m,
+    				DATE_FORMAT(passport_expire, '%Y') passport_end_y,
+    				sex,town,country,citizenship,                    
+                    visit_1,visit_2,visit_3,visit_4,visit_5,visit_6,visit_7,
+                    visit_8,visit_9,coupe,total_sum,
+                    payment_select, payment, comments        
+         FROM `wt_{$glob_year}` where `wt_{$glob_year}_id`= $get_id AND `mark_del` = '0' AND `org_paid` =  '0'";
+         
+        $res=mysql_query($q_str);
+        $num_rows=mysql_num_rows($res);
+         
+        if($num_rows<>0){
+              
+        	$row=mysql_fetch_assoc($res);
+        	$name=$row["name"];
+        	$lastname=$row["lastname"];
+        
+        	$key1=md5(substr($row["email"],0,3).$get_id.substr($row["lastname"],0,3));
+            
+        	if($get_key===$key1){
+        			$_SESSION['f_email'] = trim($row['email']);
+                	$_SESSION['f_phone_m'] = trim($row['phone_m']);
+                
+                	$_SESSION['f_name'] = trim($row['name']);
+                	$_SESSION['f_midname'] = trim($row['midname']);
+                	$_SESSION['f_lastname'] = trim($row['lastname']);
+                	$_SESSION['f_sex'] = trim($row['sex']);
+                
+                	$_SESSION['f_birthdate_d'] = $row['birthdate_d'];
+                	$_SESSION['f_birthdate_m'] = $row['birthdate_m'];
+                	$_SESSION['f_birthdate_y'] = $row['birthdate_y'];
+                
+                	$_SESSION['f_passport_type'] = $row['passport_type'];
+                	$_SESSION['f_passport'] = trim($row['passport']);
+                	$_SESSION['f_passport_place'] = trim($row['passport_place']);
+                	$_SESSION['f_passport_d'] = trim($row['passport_d']);
+                	$_SESSION['f_passport_m'] = trim($row['passport_m']);
+                	$_SESSION['f_passport_y'] = trim($row['passport_y']);
+                   	$_SESSION['f_passport_end_d'] = trim($row['passport_end_d']);
+                	$_SESSION['f_passport_end_m'] = trim($row['passport_end_m']);
+                	$_SESSION['f_passport_end_y'] = trim($row['passport_end_y']);
+                
+                	$_SESSION['f_town'] = trim($row['town']);
+                	$_SESSION['f_country'] = trim($row['country']);
+                	$_SESSION['f_citizen'] = trim($row['citizenship']);
+                
+                	$_SESSION['f_trip_1'] = $row['visit_1'];
+                	$_SESSION['f_trip_2'] = $row['visit_2'];
+                	$_SESSION['f_trip_3'] = $row['visit_3'];
+                	$_SESSION['f_trip_4'] = $row['visit_4'];
+                	$_SESSION['f_trip_5'] = $row['visit_5'];
+                	$_SESSION['f_trip_6'] = $row['visit_6'];
+                	$_SESSION['f_trip_7'] = $row['visit_7'];
+                	$_SESSION['f_trip_8'] = $row['visit_8'];
+                	$_SESSION['f_trip_9'] = $row['visit_9'];
+          
+                	$_SESSION['f_coupe_ch'] = $row['coupe'];
+                    $_SESSION['f_total'] = $row['total_sum'];
+                
+                	$_SESSION['f_payment_way_select'] = $row['payment_select'];
+                	$_SESSION['f_payment_way'] = $row['payment'];
+                	$_SESSION['f_comments'] = $row['comments'];
+                    $_SESSION['is_upd_trnsact'] = "yes_OK";
+                    $_SESSION['f_id']=$get_id; 
+                //	$_SESSION['f_ning_profile'] = $row[ning_profile'];
+              
+        	}
+            }else{
+                $_SESSION['system_message'] = "such traveller not finded, or deleted, or paid transaction is passed";
+            }
+    }
+
+}
+
+function GetFormData() {
+
+	// Извчлечём данные из формы:
+	$_SESSION['f_notneed_invitation'] = ($_POST['f_notneed_invitation'] == '1' ? '1' : '' );
+	$_SESSION['f_has_visa'] = ($_POST['f_has_visa'] == '1' ? '1' : '' );
+
+	$_SESSION['f_email'] = trim($_POST['f_email']);
+	$_SESSION['f_sex'] = $_POST['f_sex'];
+
+	$_SESSION['f_name'] = trim(conv_diacritic($_POST['f_name']));
+	$_SESSION['f_lastname'] = trim(conv_diacritic($_POST['f_lastname']));
+
+	$_SESSION['f_birthdate_d'] = $_POST['f_birthdate_d'];
+	$_SESSION['f_birthdate_m'] = $_POST['f_birthdate_m'];
+	$_SESSION['f_birthdate_y'] = $_POST['f_birthdate_y'];
+
+	$_SESSION['f_town'] = trim(conv_diacritic($_POST['f_town']));
+	$_SESSION['f_country'] = trim($_POST['f_country']);
+	$_SESSION['f_citizen'] = trim($_POST['f_citizen']);
+	$_SESSION['f_address'] = trim(conv_diacritic($_POST['f_address']));
+
+	$_SESSION['f_passport'] = trim($_POST['f_passport']);
+	$_SESSION['f_passport_place'] = trim(conv_diacritic($_POST['f_passport_place']));
+	$_SESSION['f_passport_d'] = trim($_POST['f_passport_d']);
+	$_SESSION['f_passport_m'] = trim($_POST['f_passport_m']);
+	$_SESSION['f_passport_y'] = trim($_POST['f_passport_y']);
+	$_SESSION['f_passport_end_d'] = trim($_POST['f_passport_end_d']);
+	$_SESSION['f_passport_end_m'] = trim($_POST['f_passport_end_m']);
+	$_SESSION['f_passport_end_y'] = trim($_POST['f_passport_end_y']);
+
+	$_SESSION['f_nation'] = trim($_POST['f_nation']);
+	$_SESSION['f_birth_country'] = trim($_POST['f_birth_country']);
+	$_SESSION['f_birth_place'] = trim(conv_diacritic($_POST['f_birth_place']));
+
+	$_SESSION['f_phone_m'] = trim($_POST['f_phone_m']);
+
+	$_SESSION['f_trip_1'] = $_POST['f_trip_1'];
+	$_SESSION['f_trip_2'] = $_POST['f_trip_2'];
+	$_SESSION['f_trip_3'] = $_POST['f_trip_3'];
+	$_SESSION['f_trip_4'] = $_POST['f_trip_4'];
+	$_SESSION['f_trip_5'] = $_POST['f_trip_5'];
+	$_SESSION['f_trip_6'] = $_POST['f_trip_6'];
+	$_SESSION['f_trip_7'] = $_POST['f_trip_7'];
+	$_SESSION['f_trip_8'] = $_POST['f_trip_8'];
+	$_SESSION['f_trip_9'] = $_POST['f_trip_9'];
+  
+	$_SESSION['f_coupe_ch'] = $_POST['f_coupe_ch'];
+
+	$_SESSION['f_total'] = $_POST['f_total'];
+
+	$_SESSION['f_children'] = $_POST['f_children'];
+	$_SESSION['f_entry_inrussia_d'] = $_POST['f_entry_inrussia_d'];
+	$_SESSION['f_entry_inrussia_m'] = $_POST['f_entry_inrussia_m'];
+	$_SESSION['f_entry_inrussia_y'] = $_POST['f_entry_inrussia_y'];
+
+	$_SESSION['f_russia_period'] = $_POST['f_russia_period'];
+
+	$_SESSION['f_payment_way_select'] = $_POST['f_payment_way_select'];
+	$_SESSION['f_payment_way'] = $_POST['f_payment_way'];
+	$_SESSION['f_comments'] = conv_diacritic($_POST['f_comments']);
+
+	$_SESSION['f_ning_profile'] = $_POST['f_ning_profile'];
+
+}
+//замена сиволов с диакритическими знаками на, графемы, принимаемые ОВИРом
+function conv_diacritic($str) {
+
+$replc_str=array("&#138;","&#142;","&#154;","&#158;","&#159;","&#161;","&#192;","&#193;","&#194;","&#195;","&#196;","&#197;","&#199;","&#200;","&#201;","&#202;","&#203;","&#204;",
+"&#205;","&#206;","&#207;","&#209;","&#210;","&#211;","&#212;","&#213;","&#214;","&#217;","&#218;","&#219;","&#220;","&#221;","&#223;","&#224;","&#225;","&#226;","&#227;","&#228;",
+"&#229;","&#231;","&#232;","&#233;","&#234;","&#235;","&#236;","&#237;","&#238;","&#239;","&#241;","&#242;",
+"&#243;","&#244;","&#245;","&#246;","&#249;","&#250;","&#251;","&#252;","&#253;","&#255;","&#256;","&#257;","&#258;","&#259;","&#260;",
+"&#261;","&#262;","&#263;","&#264;","&#265;","&#266;","&#267;","&#268;","&#269;","&#270;","&#271;","&#272;","&#273;","&#274;","&#275;",
+"&#276;","&#277;","&#278;","&#279;","&#280;","&#281;","&#282;","&#283;","&#284;","&#285;","&#286;","&#287;","&#288;","&#289;","&#290;",
+"&#291;","&#292;","&#293;","&#294;","&#295;","&#296;","&#297;","&#298;","&#299;","&#300;","&#301;","&#302;","&#303;","&#304;","&#305;",
+"&#306;","&#307;","&#308;","&#309;","&#310;","&#311;","&#312;","&#313;","&#314;","&#315;","&#316;","&#317;","&#318;","&#319;","&#320;",
+"&#321;","&#322;","&#323;","&#324;","&#325;","&#326;","&#327;","&#328;","&#329;","&#330;","&#331;","&#332;","&#333;","&#334;","&#335;",
+"&#336;","&#337;","&#340;","&#341;","&#342;","&#343;","&#344;","&#345;","&#346;","&#347;","&#348;","&#349;","&#350;","&#351;","&#352;",
+"&#353;","&#354;","&#355;","&#356;","&#357;","&#358;","&#359;","&#360;","&#361;","&#362;","&#363;","&#364;","&#365;","&#366;","&#367;",
+"&#368;","&#369;","&#370;","&#371;","&#372;","&#373;","&#374;","&#375;","&#376;","&#377;","&#378;","&#379;","&#380;","&#381;","&#382;");
+$should_be=array("S","Z","s","z","Y","i","A","A","A","A","Ae","A", "C","E","E","E","E","I","I","I","I","N","O","O","O","O","Oe","U","U",
+"U","Ue","Y","ss","a","a","a","a","ae","a","c","e","e","e","e","i","i","i","i","n","o","o","o","o","oe","u","u","u","ue","y","y","A","a",
+"A","a","A","a","C","c","C","c","C","c","C","c","D","d","D","d","E","e","E","e","E","e","E","e","E","e","G","g","G","g","G","g","G","g",
+"H","h","H","h","I","i","I","i","I","i","I","i","i","i","J","j","J","j","K","k","k","L","l","L","l","L","l","L","l","L","l","N","n","N",
+"n","N","n","n","N","n","O","o","O","o","O","o","R","r","R","r","R","r","S","s","S","s","S","s","S","s","T","t","T","t","T","t","U","u",
+"U","u","U","u","U","u","U","u","U","u","W","w","Y","y","Y","Z","z","Z","z","Z","z");
+return str_replace($replc_str,$should_be,$str);
+}
+
+
+// Проверялка не-латинских символов (код более 127)
+function ContainsNonLatin ( $str ) {
+    $len = strlen($str);
+	for( $i=0; $i<$len; $i++ ) if ( ord($str[$i]) > 127 ) return true;
+	return false;
+}
+
+// Проверим введенные данные:
+
+function Validate() {
+
+	global $_POST, $error_titles;
+
+	$error_titles = array();
+
+	if ( ContainsNonLatin($_SESSION['f_name']) )
+		$error_titles['first_name'] = "Your first name contains non-Latin symbols!";
+
+	if ( ContainsNonLatin($_SESSION['f_lastname']) )
+		$error_titles['last_name'] = "Your last name contains non-Latin symbols!";
+
+	if ( 0 == strlen($_SESSION['f_name'])*strlen($_SESSION['f_lastname']) )
+		$error_titles['name'] = "You have to fill in your first and last names.";
+
+	if ( empty($_SESSION['f_email']) ||
+		 "" == trim($_SESSION['f_email']) ||
+		 ! preg_match("/[\w]+(\.[\w-]+)*@[\w-]+\.(\.[\w-]+)*/",$_SESSION['f_email']) )
+		$error_titles['email'] = "Your e-mail is wrong.";
+
+	if ( empty($_SESSION['f_phone_m']) || 0 == strlen(trim($_SESSION['f_phone_m'])) )
+		$error_titles['phone_m'] = "Please enter your mobile phone";
+
+	if (ContainsNonLatin($_SESSION['f_country']) ||
+		ContainsNonLatin($_SESSION['f_town']) )
+	{
+		$error_titles['address_non_latin'] = "Your town or country contains non-Latin symbols!";
+	}
+
+	if ( 0 ==
+		strlen(trim($_SESSION['f_country'])) *
+		strlen(trim($_SESSION['f_town'])) )
+	{
+		$error_titles['address'] = "You should enter your town and country.";
+	}
+
+	if (ContainsNonLatin($_SESSION['f_passport']))
+		$error_titles['passport_non_latin'] = "Your passport number contains non-Latin symbols.";
+
+	if (ContainsNonLatin($_SESSION['f_passport_place']))
+		$error_titles['passport_place_non_latin'] = "Your passport issue place contains non-Latin symbols.";
+
+	if (ContainsNonLatin($_SESSION['f_citizen'])) {
+       $error_titles['citizen_non_latin'] = "Your citizenship contains non-Latin symbols.";
+  }
+
+
+	if (empty($_SESSION['f_passport']) ||
+		empty($_SESSION['f_passport_place']) ||
+		"" == trim($_SESSION['f_passport']) ||
+		"" == trim($_SESSION['f_passport_place']) ||
+		empty($_SESSION['f_citizen']) || "" == trim($_SESSION['f_citizen']) )
+	{
+		$error_titles['passport'] = "You must enter your passport data.";
+	}
+
+
+    
+    $chckd=0;
+  for($i=1;$i<=11;$i=$i+2){
+   $chckd=$chckd+$_SESSION['f_trip_'.$i]; 
+  }
+  if($chckd<3){
+    $error_titles['trips'] = "Please, choose participation in one of the travel parts.";
+  }
+
+	if ( $_SESSION['f_payment_way_select'] == 'other' &&
+			0 == strlen(trim($_SESSION['f_payment_way'])) )
+		$error_titles['payment_way'] = "Please, describe the payment way.";
+}
+
+?>

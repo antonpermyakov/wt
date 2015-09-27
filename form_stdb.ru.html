@@ -1,0 +1,265 @@
+<form name="f1" action="winter_stdb.php" enctype="multipart/form-data"
+	method="post" style="margin: 0 px;" onsubmit="return check_trips();">
+<input type="hidden" name="form" value="1">
+<input type="hidden" name="MAX_FILE_SIZE" value="100000">
+
+<style>
+label { display: block; width: 400px; height: 21px; }
+
+label.sex { display: inline; }
+em { color: red; }
+span { display: block; float: left; width: 180px; text-align: right; padding-right: 6px; }
+span.sex { display: block; float: left; text-align: left; height: 25px;}
+input.fo { display: block; float: left; text-align: left;  }
+input.box { border: none; }
+input#f_passport_place{display: inline;}
+</style>
+
+<p>
+<em>*</em> - Обязательные поля.
+</p>
+
+<br>
+<label for="f_email">
+<span><em>*</em> Ваш е-mail</span>
+<input type="text" name="f_email" id="f_email" value="<?=$_SESSION[f_email]?>">
+</label>
+
+<label for="f_lastname">
+<span><em>*</em> Фамилия</span>
+<input style="font-size: 10px;" type="text" maxlength="255"
+	name="f_lastname" value="<?=htmlspecialchars(stripslashes($_SESSION[f_lastname]))?>" ID="f_lastname">
+</label>
+
+<label for="f_name">
+<span><em>*</em> Имя</span>
+<input style="font-size: 10px;" type="text" maxlength="255"
+	id="f_name" name="f_name" value="<?=htmlspecialchars(stripslashes($_SESSION[f_name]))?>">
+</label>
+
+<label for="f_midname">
+<span><em>*</em> Отчество</span>
+<input style="font-size: 10px;" type="text" maxlength="255"
+	name="f_midname" value="<?=htmlspecialchars(stripslashes($_SESSION[f_midname]))?>" ID="f_midname">
+</label>
+
+
+<label for="f_phone_m">
+<span><em>*</em> Мобильный</span>
+<input type="text" id="f_phone_m" name="f_phone_m" value="<?=htmlspecialchars(stripslashes($_SESSION[f_phone_m]))?>">
+</label>
+
+<label for="f_ning">
+	<span>Дополнительный контакт</span>
+	<input id="f_ning" name="f_ning_profile" type="text"
+	value="<?=htmlspecialchars(stripslashes($_SESSION[f_ning_profile]))?>" maxlength="255">
+</label>
+
+
+<label for="f_birthdate">
+	<span><em>*</em> Дата рождения</span>
+	<? echo(DateSelectStr("$_SESSION[f_birthdate_d].$_SESSION[f_birthdate_m].$_SESSION[f_birthdate_y]", "f_birthdate", 1915, 2000));?></select>
+</label>
+
+
+<fieldset style="padding:7px; ">
+	<legend><em>*</em> Паспортные данные</legend>
+
+	<label for="f_passport_type">
+		<span>Тип паспорта:</span>
+		<select style="font-size: 10px;"
+			id="f_passport_type"
+			name="f_passport_type">
+			<option value="RF" <?=($_SESSION[f_passport_type]=="RF"?"selected=\"selected\"":"")?> >Российский общегражданский</option>
+			<option value="ZGP" <?=($_SESSION[f_passport_type]=="ZGP"?"selected=\"selected\"":"")?> >Российский Загранпаспорт</option>
+			<option value="nonRF" <?=($_SESSION[f_passport_type]=="nonRF"?"selected=\"selected\"":"")?> >не Российский</option>
+			<option value="other" <?=($_SESSION[f_passport_type]=="other"?"selected=\"selected\"":"")?> >другой документ</option>
+		</select>
+	</label>
+
+    <label for="f_citizen">
+    	<span>Гражданство</span>
+        	<input style="font-size: 10px;" type="text" id="f_citizen"
+			name="f_citizen" value="<?=htmlspecialchars(stripslashes($_SESSION[f_citizen]))?>" >
+	</label>
+
+	<label for="f_passport">
+		<span>Паспорт (серия и номер)</span>
+		<input style="font-size: 10px;" type="text" id="f_passport"
+			name="f_passport" value="<?=htmlspecialchars(stripslashes($_SESSION[f_passport]))?>" >
+	</label>
+
+		<span>Дата выдачи</span>
+		<?= DateSelectStr("$_SESSION[f_passport_d].$_SESSION[f_passport_m].$_SESSION[f_passport_y]", "f_passport", 1950, date("Y")) ?>
+		</select>
+    <label > </label>
+	<label for="f_passport_place" id="passport">
+		<span>Кем выдан</span>
+		<input style="font-size: 10px;" type="text" id="f_passport_place"
+			name="f_passport_place" value="<?=htmlspecialchars(stripslashes($_SESSION[f_passport_place]))?>" >
+	</label>
+	<label for="f_passport_organ">
+		<span>Код подразделения</span>
+		<input style="font-size: 10px;" type="text" id="f_passport_organ"
+			name="f_passport_organ" value="<?=htmlspecialchars(stripslashes($_SESSION[f_passport_organ]))?>" >
+	</label>
+
+	<!--label for="f_passport_scan" id="l_passport_scan">
+		<span><em>*</em> Сканированная страница паспорта</span>
+		<input id="f_passport_scan" type="file" name="f_passport_scan">
+	</label-->
+</fieldset>
+
+<fieldset style="padding:7px; ">
+	<legend><em>*</em> Постоянное проживание либо регистрация</legend>
+
+	<label for="f_country">
+		<span>Страна</span>
+		<input id="f_country" name="f_country" type="text"
+		value="<?=htmlspecialchars(stripslashes($_SESSION[f_country]))?>" maxlength="255">
+	</label>
+	<label for="f_town">
+		<span>Город</span>
+		<input id="f_town" name="f_town" type="text"
+			value="<?=htmlspecialchars(stripslashes($_SESSION[f_town]))?>" maxlength="255">
+	</label>
+	<label for="f_address">
+		<span>Адрес</span>
+		<input id="f_address" name="f_address" type="text"
+			value="<?=htmlspecialchars(stripslashes($_SESSION[f_address]))?>"
+			maxlength="255" style="width: 200px;">
+	</label>
+</fieldset>
+
+
+
+<fieldset style="padding:7px; ">
+	<legend><em>*</em> Поездка  </legend>
+
+	<label for="trip_1">
+	<input type="checkbox" class="box" id="f_trip_1" name="f_trip_1" value="1" onclick="Calc();"
+	<? if ( "1" === $_SESSION[f_trip_1] ) echo " checked='checked' "; ?>
+	> <?=$GLOBALS['f_trip_names'][0]?> (<?=$GLOBALS['f_trip_rur'][0]?> рублей) - <?=$GLOBALS['f_trip_dates'][0]?></label>
+
+	<label for="trip_2">
+	<input type="checkbox" class="box" id="f_trip_2" name="f_trip_2" value="1" onclick="Calc();"
+	<? if ( "1" === $_SESSION[f_trip_2] ) echo " checked='checked' "; ?>
+	> <?=$GLOBALS['f_trip_names'][1]?> (<?=$GLOBALS['f_trip_rur'][1]?> рублей) - <?=$GLOBALS['f_trip_dates'][1]?></label>
+
+	<label for="trip_3">
+	<input type="checkbox" class="box" id="f_trip_3" name="f_trip_3" value="1" onclick="Calc();"
+	<? if ( "1" === $_SESSION[f_trip_3] ) echo " checked='checked' "; ?>
+	> <?=$GLOBALS['f_trip_names'][2]?> (<?=$GLOBALS['f_trip_rur'][2]?> рублей) - <?=$GLOBALS['f_trip_dates'][2]?></label>
+
+	<label for="trip_4">
+	<input type="checkbox" class="box" id="f_trip_4" name="f_trip_4" value="1" onclick="Calc();"
+	<? if ( "1" === $_SESSION[f_trip_4] ) echo " checked='checked' "; ?>
+	> <?=$GLOBALS['f_trip_names'][3]?> (<?=$GLOBALS['f_trip_rur'][3]?> рублей) - <?=$GLOBALS['f_trip_dates'][3]?></label>
+
+
+	<label for="f_total"><input type="hidden" id="f_total" readonly name="f_total"> Всего: <b id="form_total">0</b> рублей</label>
+
+</fieldset>
+
+<br clear="all">
+<label class="sex" for="f_payment_way_select">
+	<em>*</em> Способ оплаты:<br>
+	<br clear="all">
+	<script type="text/javascript">
+	function changePaymentWay() {
+
+		sel = document.getElementById('f_payment_way_select');
+		txt = document.getElementById('f_payment_way');
+		if ( sel.options[sel.selectedIndex].value == 'other' ) {
+			txt.style.display = 'block';
+		} else {
+			txt.style.display = 'none';
+		}
+	}
+	</script>
+	<select name="f_payment_way_select" id="f_payment_way_select" onclick="changePaymentWay();">
+	<option value="sberbank" <?=("sberbank"==$_SESSION[f_payment_way_select]?"selected=\"selected\"":"")?>>Банковский перевод</option>
+	<option value="okazia" <?=("okazia"==$_SESSION[f_payment_way_select]?"selected=\"selected\"":"")?>>Из рук в руки</option>
+	<option value="other" <?=("other"==$_SESSION[f_payment_way_select]?"selected=\"selected\"":"")?>>Другое</option>
+	</select>
+</label>
+
+	<br clear="all">
+	<textarea rows="2" cols="50" name="f_payment_way" id="f_payment_way"
+	><?=htmlspecialchars(stripslashes($_SESSION[f_payment_way]))?></textarea>
+	<script>changePaymentWay();</script>
+
+<br clear="all" />
+<br clear="al " />
+<label class="sex" for="f_comments">
+	Комментарии:<br>
+	<br clear="all">
+	<textarea rows="4" cols="50" name="f_comments" id="f_comments" ><?=htmlspecialchars(stripslashes($_SESSION[f_comments]))?></textarea>
+</label>
+<br clear="all">
+<br clear="all">
+<input type="submit" value="Отправить">
+
+</form>
+
+
+<script type="text/javascript" language="JavaScript">
+//<!--
+  ch_1 = document.f1.f_trip_1;
+  ch_2 = document.f1.f_trip_2;
+  ch_3 = document.f1.f_trip_3;
+  ch_4 = document.f1.f_trip_4;
+
+  f_tot_hidd= document.f1.f_total;
+  f_tot = document.getElementById("form_total");
+
+  function check_trips() {
+    if ( 	! ch_1.checked &&
+			! ch_2.checked &&
+			! ch_3.checked &&
+			! ch_4.checked
+		) {
+		alert("Пожалуйста, выберите один или несколько участков поездки.");
+		ch_1.focus();
+		return false;
+    }
+
+    return true;
+  }
+
+  function Calc()
+  {
+	var tot = 0;
+	if ( ch_1.checked && ch_2.checked ){
+	   		ch_1.checked = false;
+    		ch_2.checked = false;
+    		ch_3.checked = true;
+	}
+	if ( ch_1.checked ) tot += <?=$GLOBALS['f_trip_rur'][0]?>;
+	if ( ch_2.checked ) tot += <?=$GLOBALS['f_trip_rur'][1]?>;
+	if ( ch_3.checked ) tot += <?=$GLOBALS['f_trip_rur'][2]?>;
+
+	if ( ch_3.checked ) {
+	    ch_1.checked = false;
+	    ch_2.checked = false;
+		tot = <?=$GLOBALS['f_trip_rur'][2]?>;
+	}
+
+	if ( ch_1.checked || ch_2.checked || ch_3.checked ) {
+		ch_4.disabled = false;
+	} else {
+		ch_4.disabled = true;
+		ch_4.checked = false;
+	}
+
+	if ( ch_4.checked ) tot += <?=$GLOBALS['f_trip_rur'][3]?>;
+
+	f_tot.innerHTML = tot;
+	f_tot_hidd.value = tot;
+  }
+
+  // show initial total in the very beginign
+  Calc();
+// -->
+</script>
+

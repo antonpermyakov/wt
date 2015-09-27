@@ -1,0 +1,84 @@
+<?
+$tour_id=$_SESSION[f_trip];
+
+/*$key = md5(substr($_SESSION[f_email],0,3).$_SESSION[f_id].substr($_SESSION[f_lastname],0,3));
+$sum_cut = floor($f_total_sum);
+$key = strtoupper(md5($tour_id.$sum_cut."upMI0X36ghOl"));*/
+$mail_email = $_SESSION[f_email];
+$mail_subj = "Winter Tour $glob_year registration";
+$mail_body = "
+Dear $_SESSION[f_name] $_SESSION[f_lastname],
+
+Thank  you for successful registration in the Russian Winter Tour $glob_year
+Economy  (Bliss)  Group.  Your  registration number in our database is
+'WT{$glob_YY}FE-{$_SESSION[f_id]}',  please refer to it when writing to us - it will help
+us a lot.
+
+For confirming your participation you have to send us $f_total_sum EUR
+BEFORE THE 15TH OF NOVEMBER!
+
+This  includes  cast of the train tickets, lectures and courses in the
+selected  part  of  the  Tour. The way to starting point of your tour,
+food and accommodations during the Tour are NOT included.
+
+
+If your payment has failed or you have any other problem sending money
+or  you have your own better way to transfer the money please write to
+us to the address team@lovingrussia.org
+
+The  currency  of  payments  is EUR. Please make sure that all possible
+extra-chrages your bank may implement for transaction are taken from your side.
+
+Bank deatils:
+
+UAB PREMIUM TRAVEL SERVICE
+Company code 301545608
+VAT code 00003849619
+International bank account number (IBAN)  LT917300010106134848
+SWIFT  code : HABALT22
+bank Swedbank AB code73000
+
+****
+IMPORTANT! PAYMENT FOR: 'Winter tour teachings with Lama Ole 2013'
+Please note your name, surname and reg number as well friends name if you are paying for him/her!
+****
+
+Please contact Solveiga Savickaite if you have any questions about the
+payment: Tel: 00370 5 2138289 , mobile : +37067097601    (Lithuania)
+E.mail: s.savickaite@travel-service.lt
+
+--------------------
+2)
+If you or  your  friends  go  to Moscow you can hand money directly
+(before  the  deadline  of course) in Moscow center for Marina Willer.
+Have  it  in  the  envelope  with the remark \"For the WinterTour, Sum,
+Reg-number(s)\"
+
+N.B.!  Please  remember  that after the deadline those who didn't make
+money  transfer  will be automatically excluded from the participation
+list.
+
+======================================================================
+
+*VISAS*
+
+Due to a long and difficult process of making invitations to Russia we
+suggest everybody to make a common tourist visa.
+
+See  http://www.lovingrussia.org  site  for the instructions how to do
+that.
+
+You can also contact Solveiga (above) with her agency about getting visas and
+tickets to/from Russia.
+
+
+======================================================================
+
+For   all   other   details   refer   to  the  page  of  registration,
+http://www.lovingrussia.org  site,  or  write  directly  to organizers
+team@lovingrussia.org
+
+See you soon,
+Russian Winter Team.";
+
+?>

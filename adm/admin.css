@@ -1,0 +1,45 @@
+body {font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif; font-size: 70%; line-height:150%; color:#000000; background:#ffffff;}
+body #page {
+	text-align:center;
+}
+body table {font-size:100%;}
+input {font-family:  Helvetica, Arial, Verdana, Tahoma, sans-serif; font-size: 100%;}
+form {margin:0px; padding:0px; font-size:100%;}
+
+/* h tags */
+h1 {font-size:120%; padding:15px 0px 10px 0px; margin:0px; line-height:normal; font-weight:normal; color:black; text-transform: uppercase;}
+h2 {font-size:110%; padding:15px 0px 10px 0px; margin:0px; line-height:normal; font-weight:normal; color:black; text-transform: uppercase;}
+h3 {font-size:100%; padding:0px 0px 0px 0px; margin:0px; line-height:normal; font-weight:normal; color:black; text-transform: uppercase;}
+
+ul, ol {margin-top:5px; margin-bottom:0px;}
+ul li, ol li {padding-bottom: 5px;}
+ul ul {list-style-type : disc;}
+
+p {margin:0px; padding:6px 0px;}
+p.margin {padding: 3px 0px 3px 20px;}
+p.align_right {text-align:right;}
+p.descr {color: #666666;}
+
+a, a:link {color:#CC3333;}
+a:hover {color:#CC3333;}
+
+table.adminka { background-color: black; vertical-align: top; }
+table.adminka th { background-color: #DDDDDD; padding: 4px; margin: 0; text-align: left; }
+table.adminka tr { background-color: white; padding: 4px; margin: 0; vertical-align: top; }
+table.adminka tr.highlight { background-color: #FFEECC; }
+
+td.tit { text-align: right; font-weight: bold; vertical-align: top; } 
+
+div.errors { color: Red; }
+div.message { color: Blue; }
+
+hr {height:1px; border:0px; border-top:1px solid #F2F2F2; margin: 5px 0px; }
+
+img {border:0px; margin:0px; padding:0px;}
+
+.hide {display:none;}
+.clear_all {clear:both;}
+.uppers
+{
+	text-transform: uppercase;
+}

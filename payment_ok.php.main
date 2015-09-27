@@ -1,0 +1,7 @@
+<?
+if ( $eng ) {
+	include("payment_ok.php.eng");
+} else {
+	include("payment_ok.php.ru");
+}
+?>

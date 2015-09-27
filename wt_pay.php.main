@@ -1,0 +1,76 @@
+<?
+$key=secure_get($_GET['key']);
+$id=secure_get($_GET['id']);
+$tour_id=secure_get($_GET['tour_id']);
+$lf=chr(13);
+
+
+$q_str="SELECT * FROM `wt_2012` where `wt_2012_id`=$id";
+$res=mysql_query($q_str);
+$num_rows=mysql_num_rows($res);
+if($num_rows<>0){
+	$row=mysql_fetch_assoc($res);
+	$name=$row["name"];
+	$lastname=$row["lastname"];
+
+	$key1=md5(substr($row["email"],0,3).$id.substr($row["lastname"],0,3));
+	if($key!==$key1){
+		$pay_errors['pay_md5_key']="checksum incorrect";
+
+	}
+    }
+    else
+    {
+    	$pay_errors['pay_id']="no traveller with such id in the registration table";
+
+    }
+
+    if ( count($GLOBALS['pay_errors']) > 0 ) {
+
+		// покажем ошибки и снова попросим заполнить форму
+	    //$_SESSION['system_message'] = "<font color='red'>".join("<br>", $GLOBALS['error_titles'])."</font>";
+        foreach($pay_errors as $key=>$val){
+             echo "<font color='red'>$val</font><br>$lf";        	}
+
+	}
+	else{
+		?>
+		<hr>
+	<form name="pay_f" action="http://bigmos.ru/en/support/account/"
+	enctype="multipart/form-data" method="post">
+	<span>Hi again, dear</span>
+	<label for="f_name">
+<b>	<span><?="$name $lastname"?></span></b><br>
+	<input type="hidden" id="name" name="f_name" value="<?=$name?>">
+	<input type="hidden" id="lastname" name="f_lastname" value="<?=$lastname?>">
+	<input type="hidden" id="man_id" name="f_man_id" value="<?=$id?>">
+	</label>
+	<label for="f_tour_id">
+	<span>You travel part is: </span>
+	<?= $GLOBALS['f_trip_names_eng'][$tour_id-1]." ".$GLOBALS['f_trip_dates_eng'][$tour_id-1] ?> <br>
+	<span>which costs: <?= $GLOBALS['f_trip_rur_hp'][$tour_id-1] ?> RUR **(about &euro;<?=$GLOBALS['f_trip_eur'][$tour_id-1] ?> )**</span>
+	<input type="hidden" id="name" name="f_tour_id" value="<?=$tour_id?>">
+	<input type="hidden" id="cost" name="f_cost" value="<?=$GLOBALS['f_trip_rur_hp'][$tour_id-1]+$id/100?>">
+	</label>
+	<hr>
+
+<!--
+<span>Debit/Credit Card payment feature is not ready yet. Please come back to the
+link soon or wait for the newsletter with announcment about it's start. Sorry for inconvenience.
+
+</span>
+
+-->
+
+
+	<span>You will be redirected to the Big Moskovsky card payment gateway and further to secure
+Chronopay service. Please mind that Chronopay is outer commercial service with a contract to 
+certain account we use - so please don't contact them about your WinterTour payment questions :)
+ - rather address them to organizers.</span>
+	<hr>
+    <span>To continue to payment, press "Proceed" button</span>
+	<input type="submit" value="Proceed">
+	</form>
+		<?
+	}
+?>

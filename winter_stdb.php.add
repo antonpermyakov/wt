@@ -1,0 +1,11 @@
+<?
+if ( $rus ) {
+
+	include("winter_stdb.php.add.ru");
+
+} else {
+
+	include("winter_stdb.php.add.eng");
+
+}
+?>

@@ -1,0 +1,68 @@
+<?
+$mail_subj = "Регистрация иностранца на зимнюю поездку $glob_year, номер $glob_year-$_SESSION[f_id]-Bliss.";
+if($_SESSION['is_upd_trnsact']==="yes_OK"){
+    $mail_subj .= " Изменение данных.";
+    }
+if($_SESSION[f_coupe_ch]==="1") {
+    $price_type = 'f_trip_eur_coupe';
+}else{$price_type = 'f_trip_eur';}       
+$mail_email = $org_email;
+$mail_body = "Добрый день.
+Это информационное письмо c веб-сайта www.buddhism.ru.
+Зарегистрирована заявка иностранного гражданина на зимний тур $glob_year.
+-------------
+Email: $_SESSION[f_email]
+Мобильный телефон: $_SESSION[f_phone_m]
+Other: $_SESSION[f_ning_profile]
+
+0. Уникальный номер: WT{$glob_YY}F-$_SESSION[f_id]
+1. Фамилия: $_SESSION[f_lastname]
+2. Имя: $_SESSION[f_name]
+3. Дата рождения: $_SESSION[f_birthdate_d].$_SESSION[f_birthdate_m].$_SESSION[f_birthdate_y]
+4. Пол: ".("M" == $_SESSION[f_sex] ? "Мужской" : "Женский")."
+6. Страна: $_SESSION[f_country]
+7. Город: $_SESSION[f_town]
+
+8. Гражданство: $_SESSION[f_citizen]
+11. Номер паспорта: $_SESSION[f_passport]
+12. Дата выдачи паспорта: $_SESSION[f_passport_d].$_SESSION[f_passport_m].$_SESSION[f_passport_y]
+13. Место выдачи паспорта: $_SESSION[f_passport_place]
+14. Дата окончания действия паспорта: $_SESSION[f_passport_end_d].$_SESSION[f_passport_end_m].$_SESSION[f_passport_end_y]
+
+20. Маршрут следования: (всего на $f_total_sum EUR)"
+.( "1" === $_SESSION[f_trip_1] ? "
+".$GLOBALS['f_trip_names'][0]." (".$GLOBALS[$price_type][0]." EUR)" : "" )
+.( "1" === $_SESSION[f_trip_2] ? "
+".$GLOBALS['f_trip_names'][1]." (".$GLOBALS[$price_type][1]." EUR)" : "" )
+.( "1" === $_SESSION[f_trip_3] ? "
+".$GLOBALS['f_trip_names'][2]." (".$GLOBALS[$price_type][2]." EUR)" : "" )
+.( "1" == $_SESSION[f_trip_4] ? "
+".$GLOBALS['f_trip_names'][3]." (".$GLOBALS[$price_type][3]." EUR)" : "" )
+.( "1" === $_SESSION[f_trip_5] ? "
+".$GLOBALS['f_trip_names'][4]." (".$GLOBALS[$price_type][4]." EUR)" : "" )
+.( "1" === $_SESSION[f_trip_6] ? "
+".$GLOBALS['f_trip_names'][5]." (".$GLOBALS[$price_type][5]." EUR)" : "" )
+.( "1" === $_SESSION[f_trip_7] ? "
+".$GLOBALS['f_trip_names'][6]." (".$GLOBALS[$price_type][6]." EUR)" : "" )
+.( "1" === $_SESSION[f_trip_8] ? "
+".$GLOBALS['f_trip_names'][7]." (".$GLOBALS[$price_type][7]." EUR)" : "" )
+.( "1" === $_SESSION[f_trip_9] ? "
+".$GLOBALS['f_trip_names'][8]." (".$GLOBALS[$price_type][8]." EUR)" : "" )
+.( "1" === $_SESSION[f_coupe_ch] ? " 
+купейное место " : "
+плацкартное место ")
+."
+
+Способ оплаты:
+----
+$_SESSION[f_payment_way]
+
+Комментарии зарегистрировавшегося:
+----
+".str_replace("\n"," ",$_SESSION[f_comments])."
+
+-----------------------------
+
+Удачи и радости,
+web@buddhism.ru";
+?>

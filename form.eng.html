@@ -1,0 +1,500 @@
+<script type="text/javascript" language="JavaScript">
+//<!--
+	function needInvitation() {
+
+		divInv = document.getElementById('div_need_invitation');
+		checkBox = document.getElementById('f_notneed_invitation');
+		labelHasVisa = document.getElementById('l_has_visa');
+		checkBoxHasVisa = document.getElementById('f_has_visa');
+		if ( divInv != undefined ) {
+			if ( checkBox.checked  ) {
+				divInv.style.display = 'none';
+				document.getElementById('l_passport_scan').style.display = 'none';
+				document.getElementById('l_visa_city').style.display = 'none';
+				document.getElementById('l_visa_country').style.display = 'none';
+				labelHasVisa.style.display = 'block';
+			} else {
+				divInv.style.display = 'block';
+				document.getElementById('l_passport_scan').style.display = 'block';
+				document.getElementById('l_visa_city').style.display = 'block';
+				document.getElementById('l_visa_country').style.display = 'block';
+				labelHasVisa.style.display = 'none';
+				checkBoxHasVisa.checked = false;
+			}
+			hasVisa();
+		}
+
+	}
+
+	function hasVisa () {
+
+		divVisa = document.getElementById('div_has_visa');
+		checkBox = document.getElementById('f_has_visa');
+		if ( divVisa != undefined ) {
+			if ( checkBox.checked  ) {
+				divVisa.style.display = 'block';
+			} else {
+				divVisa.style.display = 'none';
+			}
+		}
+
+	}
+
+	function changePaymentWay() {
+
+		sel = document.getElementById('f_payment_way_select');
+		txt = document.getElementById('f_payment_way');
+		if ( sel.options[sel.selectedIndex].value == 'other' ) {
+			txt.style.display = 'block';
+		} else {
+			txt.style.display = 'none';
+		}
+	}
+    //-->
+</script>
+
+<form name="f1" action="winter.php" enctype="multipart/form-data"
+	method="post" style="margin: 0 px;" onsubmit="return check_trips();">
+<input type="hidden" name="form" value="1">
+<input type="hidden" name="lang" value="eng">
+<input type="hidden" name="MAX_FILE_SIZE" value="100000">
+<input type="hidden" id="anthr_reg" value="<?=$_SESSION['anthr_reg']?>">
+<input type="hidden" id="is_upd_trnsact" value="<?=$_SESSION['is_upd_trnsact']?>">
+
+<style>
+label { display: block; width: 400px; height: 21px; }
+label.sex { display: inline; }
+em { color: red; }
+span { display: block; float: left; width: 180px; text-align: right; padding-right: 6px; }
+span.sex { display: block; float: left; text-align: left; height: 25px;}
+input.fo { display: block; float: left; text-align: left;  }
+input.box { border: none; }
+</style>
+
+<p>
+<em>*</em> - Required fields.
+<br>This page is intended for non-Russians.
+<br>Please use international Latin letters only.
+</p>
+
+<label for="f_email">
+<span><em>*</em> Your e-mail</span>
+<input type="text" name="f_email" id="f_email" value="<?=$_SESSION[f_email]?>">
+</label>
+
+
+<label for="f_phone_m">
+<span><em>*</em> Mobile phone (+code)</span>
+<input type="text" id="f_phone_m" name="f_phone_m" value="<?=htmlspecialchars(stripslashes($_SESSION[f_phone_m]))?>">
+</label>
+
+<label for="f_ning">
+	<span>Additional contacts</span>
+	<input id="f_ning" name="f_ning_profile" type="text"
+	value="<?=htmlspecialchars(stripslashes($_SESSION[f_ning_profile]))?>" maxlength="255">
+</label>
+
+
+<label for="f_name">
+<span><em>*</em> First name(s)</span>
+<input style="font-size: 10px;" type="text" maxlength="255"
+	id="f_name" name="f_name" value="<?=htmlspecialchars(stripslashes($_SESSION[f_name]))?>">
+</label>
+
+<label for="f_lastname">
+<span><em>*</em> Last name</span>
+<input style="font-size: 10px;" type="text" maxlength="255"
+	name="f_lastname" value="<?=htmlspecialchars(stripslashes($_SESSION[f_lastname]))?>" ID="f_lastname">
+</label>
+
+<span><em>*</em> Sex</span>
+	<span class="sex">
+	<label class="sex" for="f_sex_m">
+	<input type="radio" name="f_sex"
+		value="M" id="f_sex_m" class="box"
+		<?=('F' == $_SESSION[f_sex] ? "" : "checked")?>>
+	Male</label>
+	<label class="sex" for="f_sex_f">
+	<input type="radio" name="f_sex"
+		value="F" id="f_sex_f" class="box"
+		<?=('F' == $_SESSION[f_sex] ? "checked" : "")?>>
+	Female</label>
+	</span>
+<br clear=all>
+<label for="f_birthdate">
+	<span><em>*</em> Date of birth</span>
+	<? echo(DateSelectStr("$_SESSION[f_birthdate_d].$_SESSION[f_birthdate_m].$_SESSION[f_birthdate_y]", "f_birthdate", 1915, 2000,'onclick="CheckCoupeVisible();"'));?></select>
+</label>
+
+	<label for="f_citizen">
+    	<span><em>*</em> Citizenship</span>
+        	<input style="font-size: 10px;" type="text" id="f_citizen"
+			name="f_citizen" value="<?=htmlspecialchars(stripslashes($_SESSION[f_citizen]))?>" >
+	</label>
+
+	<label for="f_passport">
+		<span><em>*</em> Passport number</span>
+		<input style="font-size: 10px;" type="text" id="f_passport"
+			name="f_passport" value="<?=htmlspecialchars(stripslashes($_SESSION[f_passport]))?>" >
+	</label>
+	<label for="f_passport_place">
+		<span><em>*</em> Passport issue place</span>
+		<input style="font-size: 10px;" type="text" id="f_passport_place"
+			name="f_passport_place" value="<?=htmlspecialchars(stripslashes($_SESSION[f_passport_place]))?>" >
+	</label>
+	<label for="f_passport_d">
+		<span><em>*</em> Passport issue date</span>
+		<?= DateSelectStr("$_SESSION[f_passport_d].$_SESSION[f_passport_m].$_SESSION[f_passport_y]", "f_passport", 1950, date("Y")) ?>
+		</select>
+	</label>
+	<label for="f_passport_end_d">
+		<span><em>*</em> Passport exipre date</span>
+		<? echo(DateSelectStr("$_SESSION[f_passport_end_d].$_SESSION[f_passport_end_m].$_SESSION[f_passport_end_y]", "f_passport_end", $glob_year, 2050));?>
+		</select>
+	</label>
+	<br clear="all"/>
+
+<label for="f_town">
+	<span><em>*</em> City of residence </span>
+	<input id="f_town" name="f_town" type="text"
+		value="<?=htmlspecialchars(stripslashes($_SESSION[f_town]))?>" maxlength="255">
+</label>
+<label for="f_country">
+	<span><em>*</em> Country of residence</span>
+	<input id="f_country" name="f_country" type="text"
+	value="<?=htmlspecialchars(stripslashes($_SESSION[f_country]))?>" maxlength="255">
+</label>
+
+
+
+<fieldset style="padding:7px; ">
+	<legend><em>*</em> Travel</legend>
+     <div>
+            <div style="display: inline-block; float: left; width: 410px!important;">      
+            	<label for="f_trip_1">
+            	<input type="checkbox" class="box" id="f_trip_1" name="f_trip_1" value="1" onclick="CheckCheckboxes(0);Calc();"
+            	<? if ( $_SESSION[f_trip_1]==="1" ) echo " checked='checked' "; ?>
+            	>  <?=$GLOBALS['f_trip_names_eng'][0]?> - <?=$GLOBALS['f_trip_dates_eng'][0]?></label>
+            
+            	<label for="f_trip_2">
+            	<input type="checkbox" class="box" id="f_trip_2" name="f_trip_2" value="1" onclick="CheckCheckboxes(1);Calc();"
+            	<? if ( $_SESSION[f_trip_2]==="1" ) echo " checked='checked' "; ?>
+            	>  <?=$GLOBALS['f_trip_names_eng'][1]?> - <?=$GLOBALS['f_trip_dates_eng'][1]?></label>
+            
+                <label for="f_trip_3">
+            	<input type="checkbox" class="box" id="f_trip_3" name="f_trip_3" value="1" onclick="CheckCheckboxes(2);Calc();"
+            	<? if ( $_SESSION[f_trip_3]==="1" ) echo " checked='checked' "; ?>
+            	>  <?=$GLOBALS['f_trip_names_eng'][2]?> - <?=$GLOBALS['f_trip_dates_eng'][2]?></label>
+            
+               <label for="f_trip_4">
+            	<input type="checkbox" class="box" id="f_trip_4" name="f_trip_4" value="1" onclick="CheckCheckboxes(3);Calc();"
+            	<? if ( $_SESSION[f_trip_4]==="1" ) echo " checked='checked' "; ?>
+            	>  <?=$GLOBALS['f_trip_names_eng'][3]?> - <?=$GLOBALS['f_trip_dates_eng'][3]?></label>
+
+
+                <label for="f_trip_5">
+            	<input type="checkbox" class="box" id="f_trip_5" name="f_trip_5" value="1" onclick="CheckCheckboxes(4);Calc();"
+            	<? if ( "1" === $_SESSION[f_trip_5] ) echo " checked='checked' "; ?>
+            	> <?=$GLOBALS['f_trip_names_eng'][4]?> - <?=$GLOBALS['f_trip_dates_eng'][4]?></label>
+            
+            	<label for="f_trip_6">
+            	<input type="checkbox" class="box" id="f_trip_6" name="f_trip_6" value="1" onclick="CheckCheckboxes(5);Calc();"
+            	<? if ( "1" === $_SESSION[f_trip_6] ) echo " checked='checked' "; ?>
+            	> <?=$GLOBALS['f_trip_names_eng'][5]?> - <?=$GLOBALS['f_trip_dates_eng'][5]?></label>
+            
+                <label for="f_trip_7">
+            	<input type="checkbox" class="box" id="f_trip_7" name="f_trip_7" value="1" onclick="CheckCheckboxes(6);Calc();"
+            	<? if ( "1" === $_SESSION[f_trip_7] ) echo " checked='checked' "; ?>
+            	> <?=$GLOBALS['f_trip_names_eng'][6]?> - <?=$GLOBALS['f_trip_dates_eng'][6]?></label>
+            
+            	<label for="f_trip_8">
+            	<input type="checkbox" class="box" id="f_trip_8" name="f_trip_8" value="1" onclick="CheckCheckboxes(7);Calc();"
+            	<? if ( "1" === $_SESSION[f_trip_8] ) echo " checked='checked' "; ?>
+            	> <?=$GLOBALS['f_trip_names_eng'][7]?> - <?=$GLOBALS['f_trip_dates_eng'][7]?></label>
+            
+            	<label for="f_trip_9">
+            	<input type="checkbox" class="box" id="f_trip_9" name="f_trip_9" value="1" onclick="CheckCheckboxes(8);Calc();"
+            	<? if ( "1" === $_SESSION[f_trip_9] ) echo " checked='checked' "; ?>
+            	> <?=$GLOBALS['f_trip_names_eng'][8]?> - <?=$GLOBALS['f_trip_dates_eng'][8]?></label>
+                                                                                                       
+            
+
+	           <label for="f_total"><input type="hidden" id="f_total" readonly name="f_total">Total: ~ &euro;<b id="form_total">0</b></label>
+
+     </div>
+        <div style="display: inline-block; float: right; width: 50px!important;">
+            <label for="f_coupe_ch">
+                <input type="checkbox" class="box" id="f_coupe_ch" name="f_coupe_ch" value="1" onclick="Calc();" 
+                <? if ( "1" === $_SESSION[f_coupe_ch] ) echo " checked='checked' "; ?>
+                >compartment
+                
+            </label> 
+        </div>
+    </div> 
+
+</fieldset>
+<br clear="all">
+<label class="sex" for="f_payment_way_select">
+	<em>*</em> Intended way of payment:&nbsp;&nbsp;
+	<select name="f_payment_way_select" id="f_payment_way_select" onchange="changePaymentWay();">
+	<option value="banktrans" <?=("banktrans"==$_SESSION[f_payment_way_select]?"selected=\"selected\"":"")?>>Bank transfer</option>
+	<option value="handtomoscow" <?=("handtomoscow"==$_SESSION[f_payment_way_select]?"selected=\"selected\"":"")?>>Hand to Moscow</option>
+	<option value="other" <?=("other"==$_SESSION[f_payment_way_select]?"selected=\"selected\"":"")?>>Other</option>
+	</select><br/>
+</label>
+<i><p>if you are going to pay for someone else or to be paid by other person, please put the name or
+names involved in the comments area below.</p></i>
+
+	<br clear="all">
+	<textarea rows="2" cols="50" name="f_payment_way" id="f_payment_way"
+	><?=htmlspecialchars(stripslashes($_SESSION[f_payment_way]))?></textarea>
+	<script>changePaymentWay();</script>
+        
+<br clear="all">
+<label class="sex" for="f_comments">
+	Comments:<br>
+	<br clear="all">
+	<textarea rows="4" cols="50" name="f_comments" id="f_comments" ><?=htmlspecialchars(stripslashes($_SESSION[f_comments]))?></textarea>
+</label>
+<br clear="all">
+<br clear="all">
+<input type="submit" value="Send">
+</form>
+
+<script type="text/javascript" language="JavaScript">
+//<!--
+  
+  //needInvitation();
+
+ var ch = new Array(9);//all trip checkboxes
+  //if it's another new reg all inputs must be empty
+  var new_reg = document.getElementById("anthr_reg"); 
+  var f_tot_hidd= document.getElementById('f_total');
+  if(new_reg.value==="Yes"){
+    f_tot_hidd.value=0;
+   
+   for(var i=0;i<ch.length;i++){
+          ch[i] = document.getElementById('f_trip_'+(i+1));
+            if( ch[i]!==null&&ch[i]!==undefined){
+                  ch[i].checked=0;
+                  }
+      }
+ 
+    var elements = document.getElementsByTagName("input");
+    for(var i=0; i<elements.length; i++){
+        var s_elid = elements[i].id;
+        if(s_elid.substr(0,7)==="f_trip_" ){continue;}
+        if(elements[i].type === "hidden"){continue;}
+        if(elements[i].type === "submit"||elements[i].type === "checkbox"){continue;}
+        elements[i].value="";
+    }
+    var textarea = document.getElementsByTagName('textarea');
+     for(var i=0; i<textarea.length; i++){textarea[i].innerHTML="";}
+    var option = document.getElementsByTagName('option'); 
+    for(var i=0; i<option.length; i++){if(option[i].value==='2000'){option[i].selected="selected";}else{option[i].selected="";}}
+   
+  }
+  
+ 
+  
+  var ch_labels= new Array(9);//all its labels
+  var labels = document.getElementsByTagName('label');
+  var i1=0;
+ 
+  for (var i = 0; i < labels.length; i++) {
+    l_for = labels[i].htmlFor;
+    if(l_for.substr(0,6) === "f_trip"){
+        ch_labels[i1] = labels[i];
+        i1++;
+    }
+  
+  }
+  
+ 
+  
+  for (var i=1; i<=ch.length-1; i=i+2){
+  ch[i] = document.getElementById('f_trip_'+(i+1));
+  if( ch[i]!==null&&ch[i]!==undefined){
+    ch[i].hidden="hidden";
+    if(ch_labels[i]!==undefined){
+      //  if(!ch_labels[i].control.checked){
+             ch_labels[i].style.display="none";    
+      //  }
+      
+    }
+    
+    }
+  }
+
+
+  function chbx_arr(){
+    var ch = new Array(9);
+	  for (var i=0; i<=ch.length-1; i++){
+	  ch[i] = document.getElementById('f_trip_'+(i+1));
+	  }
+	  return ch;
+  	}
+  function chbx_labels(){
+      ch_lbls= new Array(12);
+      var labels = document.getElementsByTagName('label');
+      i1=0;
+      for (var i = 0; i < labels.length; i++) {
+        l_for = labels[i].htmlFor.substr(0,6);
+        if(l_for === "f_trip"){
+            ch_lbls[i1] = labels[i];
+            i1++;
+        }
+      }  
+      return ch_lbls
+  }
+
+  function check_trips() {
+	var ch = chbx_arr();
+   
+ var q_ch = 0;
+ for(var n=0;n<ch.length;n=n+2){q_ch=q_ch+ch[n].checked;}
+ if(q_ch<3)
+        {
+		alert("Choose more waypoints, please!");
+		ch[0].focus();
+		return false;
+    }
+
+    return true;
+  }
+  
+  function CheckCoupeVisible()
+  {
+    var sel_brdy = document.getElementById('f_birthdate_y');   
+    var labels = document.getElementsByTagName('label');
+    var ch_coupe = document.getElementById('f_coupe_ch');
+ 
+    for (var i = 0; i < labels.length; i++) {
+    l_for = labels[i].htmlFor;
+    
+    if(l_for === "f_coupe_ch"){
+          var lbl_coupe = labels[i];
+      }
+    }
+    if(sel_brdy.value<="1965"){
+        lbl_coupe.style.display='block';}
+    else{
+        lbl_coupe.style.display='none';
+        ch_coupe.checked=0; Calc();}
+    
+  }
+
+  function CheckCheckboxes(ind) 
+  {
+    var ch = chbx_arr();
+    var ch_lbls = chbx_labels();
+   
+    
+   
+    
+    if (ind===undefined) ind=0;
+        
+    if(ch[ind].checked){
+        
+        var ef=0;
+        var el=0;
+      	for(var i=0; i<ch.length; i++){
+      		if (ch[i].checked && ef===0) { ef=i; break;}
+      		}
+      	for(var i=0; i<ch.length; i++){
+      		if (ch[i].checked && el<=i) { el=i;}
+      		}
+  	  
+      	for (var i=ef; i<el; i++){
+
+      		ch[i].checked = 1;
+          
+      	    }
+     }
+  	 
+  else{ 
+        var ef=0;
+        var el=0;
+      	for(var i=0; i<ch.length; i++){
+      		if (ch[i].checked && ef===0) { ef=i; break;}
+      		}
+      	for(var i=0; i<ch.length; i++){
+      		if (ch[i].checked && el<=i) { el=i;}
+      		}
+        if(ind>ef&&ind<el){ch[ind].checked=1; 
+      
+   return 0;}
+        if(ind>=0&&ind<ch.length-1){ch[ind+1].checked=0;ch_lbls[ind+1].style.display = "none";}
+        if(ind<=ch.length-1&&ind>0){ch[ind-1].checked=0;ch_lbls[ind-1].style.display = "none";}
+    	 } 
+   return 0;      
+ 
+  }
+
+
+
+  function Calc()
+  {
+    f_tot_hidd= document.getElementById('f_total');
+    f_tot = document.getElementById('form_total');
+    
+    var labels = document.getElementsByTagName('label');
+ 
+  for (var i = 0; i < labels.length; i++) {
+    l_for = labels[i].htmlFor;
+   
+    if(l_for === "f_total"){
+          var lbl_tot = labels[i];
+      }
+  }
+    
+    var lCoupe = (document.getElementById('f_coupe_ch').checked) ? true : false;
+    
+    var SumOfPay = new Array(11);
+    if(!lCoupe){
+        SumOfPay[0] = <?=$GLOBALS['f_trip_eur'][0]?>;
+        SumOfPay[1] = <?=$GLOBALS['f_trip_eur'][1]?>;
+        SumOfPay[2] = <?=$GLOBALS['f_trip_eur'][2]?>;
+        SumOfPay[3] = <?=$GLOBALS['f_trip_eur'][3]?>;
+        SumOfPay[4] = <?=$GLOBALS['f_trip_eur'][4]?>;
+        SumOfPay[5] = <?=$GLOBALS['f_trip_eur'][5]?>;
+        SumOfPay[6] = <?=$GLOBALS['f_trip_eur'][6]?>;
+        SumOfPay[7] = <?=$GLOBALS['f_trip_eur'][7]?>;
+        SumOfPay[8] = <?=$GLOBALS['f_trip_eur'][8]?>;
+    
+    }else{
+        SumOfPay[0] = <?=$GLOBALS['f_trip_eur_coupe'][0]?>;
+        SumOfPay[1] = <?=$GLOBALS['f_trip_eur_coupe'][1]?>;
+        SumOfPay[2] = <?=$GLOBALS['f_trip_eur_coupe'][2]?>;
+        SumOfPay[3] = <?=$GLOBALS['f_trip_eur_coupe'][3]?>;
+        SumOfPay[4] = <?=$GLOBALS['f_trip_eur_coupe'][4]?>;
+        SumOfPay[5] = <?=$GLOBALS['f_trip_eur_coupe'][5]?>;
+        SumOfPay[6] = <?=$GLOBALS['f_trip_eur_coupe'][6]?>;
+        SumOfPay[7] = <?=$GLOBALS['f_trip_eur_coupe'][7]?>;
+        SumOfPay[8] = <?=$GLOBALS['f_trip_eur_coupe'][8]?>;
+     
+    }
+    
+  
+  	var ch = chbx_arr();
+ 	
+	var tot = 20;
+    var q_ch = 0;
+	for (var i=0; i<ch.length; i++){
+		if ( ch[i].checked ) {tot += SumOfPay[i]; q_ch++;}       
+		}
+
+	f_tot.innerHTML = tot;
+	f_tot_hidd.value = tot;
+    if(q_ch<5){lbl_tot.style.display = "none";}
+    else{lbl_tot.style.display = "block";}
+  }
+  
+
+  // show initial total in the very beginign
+  Calc();
+  
+  CheckCoupeVisible();
+  changePaymentWay();
+//-->
+</script>

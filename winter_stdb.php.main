@@ -1,0 +1,20 @@
+<?
+if ( $eng ) {
+	include("winter_stdb.php.main.eng");
+} else {
+	include("winter_stdb.php.main.ru");
+}
+
+if ( $_SESSION['system_message'] ) {
+	echo "<font color='red'>$_SESSION[system_message]</font><br><br>";
+	$_SESSION['system_message'] = "";
+}
+
+
+
+if ( $eng ) {
+	include("form_stdb.eng.html");
+} else {
+	include("form_stdb.ru.html");
+}
+?>

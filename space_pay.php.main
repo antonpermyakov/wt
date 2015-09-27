@@ -1,0 +1,49 @@
+<?
+
+$id=secure_get($_GET['id']);
+if (isset($_GET['name'])){
+	$name=secure_get($_GET['name']);}
+else{$name="space";}
+if (isset($_GET['lname'])){
+$lastname=secure_get($_GET['lname']);}
+else{$lastname="group";}
+$lf=chr(13);
+
+		?>
+		<hr>
+	<form name="pay_f" action="http://bigmos.ru/en/support/account/"
+	enctype="multipart/form-data" method="post">
+	<label for="f_man_id">
+	<span>Hi there, dear <?="$name $lastname"?></span><br>
+
+
+	<input type="hidden" id="man_id" name="f_man_id" value="<?='sp_'.$id?>">
+	</label>
+	<label for="f_tour_id">
+	<span>Your travel cost in rubles for card payment is: 79000 RUR (which is about 1830 euro)</span>
+	<input type="hidden" id="tour_id" name="f_tour_id" value="5">
+	<input type="hidden" id="cost" name="f_cost" value="<?= 79000+$id/100 ?>">
+	<input type="hidden" id="name" name="f_name" value="<?=$name?>">
+	<input type="hidden" id="lastname" name="f_lastname" value="<?=$lastname?>">
+	</label>
+	<hr>
+
+<!--
+
+<span>Debit/Credit Card payment feature is not ready yet. Please come back to the
+link soon or wait for the newsletter with announcment about it's start. Sorry for inconvenience.
+
+</span>
+
+-->
+
+
+	<span>You will be redirected to the Big Moskovsky card payment gateway and further to secure
+Chronopay service. Please mind that Chronopay is outer commercial service with a contract to 
+certain account we use - so please don't contact them about your WinterTour payment questions :)
+ - rather address them to organizers.</span>
+	<hr>
+    <span>To continue to payment, press "Proceed" button</span>
+	<input type="submit" value="Proceed">
+	</form>
+

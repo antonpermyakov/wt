@@ -1,0 +1,19 @@
+<?
+if ( $_SESSION['system_message'] ) {
+	$_SESSION['system_message'] = "";
+}
+session_destroy();
+?>
+Your data sent to organizers. Thank you!<br>
+Please make sure you receive an automatic approval on your email address.
+If you don't get it - <b>please check your spam folder</b>, if you don't find it there - please contact organizers.
+
+<br><br>
+
+<form name="new_reg" method="POST" action="winter.php?lang=eng">
+<input type="hidden" name="anthr_reg" value="Yes" />
+To register one more person,click <input type="submit" value ="submit"/>.
+</form>
+
+<br><br>
+

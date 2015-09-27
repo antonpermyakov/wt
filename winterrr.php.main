@@ -1,0 +1,21 @@
+<?
+
+if ( $eng ) {
+	include("winter.php.main.eng");
+} else {
+	include("winter.php.main.ru");
+}
+
+if ( $_SESSION['system_message'] ) {
+	echo "<font color='red'>$_SESSION[system_message]</font><br><br>";
+	$_SESSION['system_message'] = "";
+}
+
+
+
+if ( $eng ) {
+	include("form.eng.html");
+} else {
+	include("form.ru.html");
+}
+?>
