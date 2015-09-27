@@ -217,9 +217,22 @@ input.box { border: none; }
             	<? if ( "1" === $_SESSION[f_trip_9] ) echo " checked='checked' "; ?>
             	> <?=$GLOBALS['f_trip_names_eng'][8]?> - <?=$GLOBALS['f_trip_dates_eng'][8]?></label>
                                                                                                        
-            
+            	<label for="f_trip_10">                                             
+            	<input type="checkbox" class="box" id="f_trip_10" name="f_trip_10" value="1" onclick="CheckCheckboxes(9);Calc();"
+            	<? if ( "1" === $_SESSION[f_trip_10] ) echo " checked='checked' "; ?>
+            	> <?=$GLOBALS['f_trip_names'][9]?> - <?=$GLOBALS['f_trip_dates'][9]?></label>
 
-	           <label for="f_total"><input type="hidden" id="f_total" readonly name="f_total">Total: ~ &euro;<b id="form_total">0</b></label>
+            	<label for="f_trip_11">
+            	<input type="checkbox" class="box" id="f_trip_11" name="f_trip_11" value="1" onclick="CheckCheckboxes(10);Calc();"
+            	<? if ( "1" === $_SESSION[f_trip_11] ) echo " checked='checked' "; ?>
+            	> <?=$GLOBALS['f_trip_names'][10]?> - <?=$GLOBALS['f_trip_dates'][10]?></label>
+
+            	<label for="f_trip_12">
+            	<input type="checkbox" class="box" id="f_trip_12" name="f_trip_12" value="1" onclick="CheckCheckboxes(11);Calc();"
+            	<? if ( "1" === $_SESSION[f_trip_12] ) echo " checked='checked' "; ?>
+            	> <?=$GLOBALS['f_trip_names'][11]?> - <?=$GLOBALS['f_trip_dates'][11]?></label>
+           
+                <label for="f_total"><input type="hidden" id="f_total" readonly name="f_total">Total: ~ &euro;<b id="form_total">0</b></label>
 
      </div>
         <div style="display: inline-block; float: right; width: 50px!important;">
