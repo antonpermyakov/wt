@@ -138,67 +138,20 @@ input#f_passport_place{display: inline;}
 <fieldset style="padding:7px; ">  
 	<legend><em>*</em> Поездка  </legend>
         <div>
-            <div style="display: inline-block; float: left; width: 410px!important;">        
-            	<label for="f_trip_1">
-            	<input type="checkbox" class="box" id="f_trip_1" name="f_trip_1" value="1" onclick="CheckCheckboxes(0);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_1] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][0]?> - <?=$GLOBALS['f_trip_dates'][0]?></label>
-            
-            	<label for="f_trip_2">
-            	<input type="checkbox" class="box" id="f_trip_2" name="f_trip_2" value="1" onclick="CheckCheckboxes(1);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_2] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][1]?> - <?=$GLOBALS['f_trip_dates'][1]?></label>
-            
-            	<label for="f_trip_3">
-            	<input type="checkbox" class="box" id="f_trip_3" name="f_trip_3" value="1" onclick="CheckCheckboxes(2);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_3] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][2]?> - <?=$GLOBALS['f_trip_dates'][2]?></label>
-            
-            	<label for="f_trip_4">
-            	<input type="checkbox" class="box" id="f_trip_4" name="f_trip_4" value="1" onclick="CheckCheckboxes(3);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_4] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][3]?> - <?=$GLOBALS['f_trip_dates'][3]?></label>
-            
-                <label for="f_trip_5">
-            	<input type="checkbox" class="box" id="f_trip_5" name="f_trip_5" value="1" onclick="CheckCheckboxes(4);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_5] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][4]?> - <?=$GLOBALS['f_trip_dates'][4]?></label>
-            
-            	<label for="f_trip_6">
-            	<input type="checkbox" class="box" id="f_trip_6" name="f_trip_6" value="1" onclick="CheckCheckboxes(5);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_6] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][5]?> - <?=$GLOBALS['f_trip_dates'][5]?></label>
-            
-                <label for="f_trip_7">
-            	<input type="checkbox" class="box" id="f_trip_7" name="f_trip_7" value="1" onclick="CheckCheckboxes(6);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_7] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][6]?> - <?=$GLOBALS['f_trip_dates'][6]?></label>
-            
-            	<label for="f_trip_8">
-            	<input type="checkbox" class="box" id="f_trip_8" name="f_trip_8" value="1" onclick="CheckCheckboxes(7);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_8] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][7]?> - <?=$GLOBALS['f_trip_dates'][7]?></label>
-            
-            	<label for="f_trip_9">
-            	<input type="checkbox" class="box" id="f_trip_9" name="f_trip_9" value="1" onclick="CheckCheckboxes(8);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_9] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][8]?> - <?=$GLOBALS['f_trip_dates'][8]?></label>
-                           
-            	<label for="f_trip_10">                                             
-            	<input type="checkbox" class="box" id="f_trip_10" name="f_trip_10" value="1" onclick="CheckCheckboxes(9);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_10] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][9]?> - <?=$GLOBALS['f_trip_dates'][9]?></label>
-
-            	<label for="f_trip_11">
-            	<input type="checkbox" class="box" id="f_trip_11" name="f_trip_11" value="1" onclick="CheckCheckboxes(10);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_11] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][10]?> - <?=$GLOBALS['f_trip_dates'][10]?></label>
-
-            	<label for="f_trip_12">
-            	<input type="checkbox" class="box" id="f_trip_12" name="f_trip_12" value="1" onclick="CheckCheckboxes(11);Calc();"
-            	<? if ( "1" === $_SESSION[f_trip_12] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][11]?> - <?=$GLOBALS['f_trip_dates'][11]?></label>
-           
+            <div style="display: inline-block; float: left; width: 410px!important;"> 
+<?php
+// число элементов поездки (длина массива $GLOBALS['f_trip_names'])
+$num_of_gaps = count($GLOBALS['f_trip_names']);
+for ($i=1; $i <= $num_of_gaps; $i++)
+{
+?>
+            	<label for="f_trip_<?=$i?>">
+            	<input type="checkbox" class="box" id="f_trip_<?=$i?>" name="f_trip_<?=$i?>" value="1" onclick="CheckCheckboxes(<?=($i-1)?>);Calc();"
+            	<? if ( "1" === $_SESSION["f_trip_$i"] ) echo " checked='checked' "; ?>
+            	> <?=$GLOBALS['f_trip_names'][($i-1)]?> - <?=$GLOBALS['f_trip_dates'][($i-1)]?></label>
+<?php
+}
+?>       
             	<label for="f_total"><input type="hidden" id="f_total" readonly name="f_total"> Всего: <b id="form_total">0</b> рублей</label>
         </div>
         <div style="display: inline-block; float: right; width: 50px!important;">
@@ -256,51 +209,49 @@ input#f_passport_place{display: inline;}
 
 <script type="text/javascript" language="JavaScript">
 //<!--
-  var ch = new Array(9);//all trip checkboxes
-  //if it's another new reg all inputs must be empty
-  var new_reg = document.getElementById("anthr_reg"); 
-  var f_tot_hidd= document.getElementById('f_total');
-  if(new_reg.value==="Yes"){
+var ch = new Array(<?=$num_of_gaps?>); //all trip checkboxes
+//if it's another new reg all inputs must be empty
+var new_reg = document.getElementById("anthr_reg"); 
+var f_tot_hidd= document.getElementById('f_total');
+if (new_reg.value==="Yes")
+{
     f_tot_hidd.value=0;
-   
-   for(var i=0;i<ch.length;i++){
-          ch[i] = document.getElementById('f_trip_'+(i+1));
-            if( ch[i]!==null&&ch[i]!==undefined){
-                  ch[i].checked=0;
-                  }
-      }
- 
+    for (var i=0; i<ch.length; i++)
+    {
+        ch[i] = document.getElementById('f_trip_'+(i+1));
+        if (ch[i]!==null && ch[i] !== undefined) 
+        {
+            ch[i].checked=0;
+        }
+    }
     var elements = document.getElementsByTagName("input");
-    for(var i=0; i<elements.length; i++){
+    for (var i=0; i<elements.length; i++)
+    {
         var s_elid = elements[i].id;
-        if(s_elid.substr(0,7)==="f_trip_" ){continue;}
-        if(elements[i].type === "hidden"){continue;}
-        if(elements[i].type === "submit"||elements[i].type === "checkbox"){continue;}
+        if (s_elid.substr(0,7)==="f_trip_" ){continue;}
+        if (elements[i].type === "hidden"){continue;}
+        if (elements[i].type === "submit" || elements[i].type === "checkbox"){continue;}
         elements[i].value="";
     }
     var textarea = document.getElementsByTagName('textarea');
-     for(var i=0; i<textarea.length; i++){textarea[i].innerHTML="";}
+    for (var i=0; i<textarea.length; i++){ textarea[i].innerHTML=""; }
     var option = document.getElementsByTagName('option'); 
-    for(var i=0; i<option.length; i++){if(option[i].value==='2000'){option[i].selected="selected";}else{option[i].selected="";}}
-   
-  }
+    for (var i=0; i<option.length; i++){ if (option[i].value==='2000') { option[i].selected="selected"; } else { option[i].selected=""; } }
+}
   
+var ch_labels= new Array(<?=$num_of_gaps?>);//all its labels
+var labels = document.getElementsByTagName('label');
+var i1=0;
  
-  
-  var ch_labels= new Array(9);//all its labels
-  var labels = document.getElementsByTagName('label');
-  var i1=0;
- 
-  for (var i = 0; i < labels.length; i++) {
+for (var i = 0; i < labels.length; i++) 
+{
     l_for = labels[i].htmlFor;
-    if(l_for.substr(0,6) === "f_trip"){
+    if (l_for.substr(0,6) === "f_trip")
+    {
         ch_labels[i1] = labels[i];
         i1++;
     }
-  
-  }
-  
- 
+}
   
   for (var i=1; i<ch.length-1; i=i+2){
   ch[i] = document.getElementById('f_trip_'+(i+1));
@@ -318,14 +269,14 @@ input#f_passport_place{display: inline;}
 
 
   function chbx_arr(){
-    var ch = new Array(9);
+    var ch = new Array(<?=$num_of_gaps?>);
 	  for (var i=0; i<=ch.length-1; i++){
 	  ch[i] = document.getElementById('f_trip_'+(i+1));
 	  }
 	  return ch;
   	}
   function chbx_labels(){
-      ch_lbls= new Array(9);
+      ch_lbls= new Array(<?=$num_of_gaps?>);
       var labels = document.getElementsByTagName('label');
       i1=0;
       for (var i = 0; i < labels.length; i++) {
@@ -378,9 +329,6 @@ input#f_passport_place{display: inline;}
   {
     var ch = chbx_arr();
     var ch_lbls = chbx_labels();
-   
-    
-   
     
     if (ind===undefined) ind=0;
         
@@ -429,53 +377,32 @@ input#f_passport_place{display: inline;}
     
     var labels = document.getElementsByTagName('label');
  
-  for (var i = 0; i < labels.length; i++) {
-    l_for = labels[i].htmlFor;
+    for (var i = 0; i < labels.length; i++) {
+      l_for = labels[i].htmlFor;
    
-    if(l_for === "f_total"){
+      if(l_for === "f_total"){
           var lbl_tot = labels[i];
       }
   }
     
     var lCoupe = (document.getElementById('f_coupe_ch').checked) ? true : false;
     
-    var SumOfPay = new Array(11);
+    var SumOfPay = new Array(<?=$num_of_gaps?>);
     if(!lCoupe){
-        SumOfPay[0] = <?=$GLOBALS['f_trip_rur'][0]?>;
-        SumOfPay[1] = <?=$GLOBALS['f_trip_rur'][1]?>;
-        SumOfPay[2] = <?=$GLOBALS['f_trip_rur'][2]?>;
-        SumOfPay[3] = <?=$GLOBALS['f_trip_rur'][3]?>;
-        SumOfPay[4] = <?=$GLOBALS['f_trip_rur'][4]?>;
-        SumOfPay[5] = <?=$GLOBALS['f_trip_rur'][5]?>;
-        SumOfPay[6] = <?=$GLOBALS['f_trip_rur'][6]?>;
-        SumOfPay[7] = <?=$GLOBALS['f_trip_rur'][7]?>;
-        SumOfPay[8] = <?=$GLOBALS['f_trip_rur'][8]?>;
- 
+        <?php foreach($GLOBALS['f_trip_rur'] as $i => $val) echo "SumOfPay[$i] = ".$GLOBALS['f_trip_rur'][$i].";\r\n        "; ?>
     }else{
-        SumOfPay[0] = <?=$GLOBALS['f_trip_rur_coupe'][0]?>;
-        SumOfPay[1] = <?=$GLOBALS['f_trip_rur_coupe'][1]?>;
-        SumOfPay[2] = <?=$GLOBALS['f_trip_rur_coupe'][2]?>;
-        SumOfPay[3] = <?=$GLOBALS['f_trip_rur_coupe'][3]?>;
-        SumOfPay[4] = <?=$GLOBALS['f_trip_rur_coupe'][4]?>;
-        SumOfPay[5] = <?=$GLOBALS['f_trip_rur_coupe'][5]?>;
-        SumOfPay[6] = <?=$GLOBALS['f_trip_rur_coupe'][6]?>;
-        SumOfPay[7] = <?=$GLOBALS['f_trip_rur_coupe'][7]?>;
-        SumOfPay[8] = <?=$GLOBALS['f_trip_rur_coupe'][8]?>;
+        <?php foreach($GLOBALS['f_trip_rur_coupe'] as $i => $val) echo "SumOfPay[$i] = ".$GLOBALS['f_trip_rur_coupe'][$i].";\r\n        "; ?>
     }
-    
-  
-  	var ch = chbx_arr();
- 	
-	var tot = 0;
+    var ch = chbx_arr();
+    var tot = 0;
     var q_ch = 0;
-	for (var i=0; i<ch.length; i++){
-		if ( ch[i].checked ) {tot += SumOfPay[i]; q_ch++;}       
-		}
-
-	f_tot.innerHTML = tot;
-	f_tot_hidd.value = tot;
-    if(q_ch<5){lbl_tot.style.display = "none";}
-    else{lbl_tot.style.display = "block";}
+    for (var i=0; i<ch.length; i++){
+        if ( ch[i].checked ) { tot += SumOfPay[i]; q_ch++; }       
+    }
+    f_tot.innerHTML = tot;
+    f_tot_hidd.value = tot;
+    if (q_ch < 5) { lbl_tot.style.display = "none"; }
+    else { lbl_tot.style.display = "block"; }
   }
 
   // show initial total in the very beginign
