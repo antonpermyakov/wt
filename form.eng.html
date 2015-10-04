@@ -189,7 +189,7 @@ for ($i=1; $i <= $num_of_gaps; $i++)
             	<label for="f_trip_<?=$i?>">
             	<input type="checkbox" class="box" id="f_trip_<?=$i?>" name="f_trip_<?=$i?>" value="1" onclick="CheckCheckboxes(<?=($i-1)?>);Calc();"
             	<? if ( "1" === $_SESSION["f_trip_$i"] ) echo " checked='checked' "; ?>
-            	> <?=$GLOBALS['f_trip_names'][($i-1)]?> - <?=$GLOBALS['f_trip_dates'][($i-1)]?></label>
+            	> <?=$GLOBALS['f_trip_names_eng'][($i-1)]?> - <?=$GLOBALS['f_trip_dates_eng'][($i-1)]?></label>
 <?php
 }
 ?>       
