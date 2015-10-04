@@ -1,56 +1,65 @@
 <script type="text/javascript" language="JavaScript">
 //<!--
-	function needInvitation() {
+function needInvitation() 
+{
+    divInv = document.getElementById('div_need_invitation');
+    checkBox = document.getElementById('f_notneed_invitation');
+    labelHasVisa = document.getElementById('l_has_visa');
+    checkBoxHasVisa = document.getElementById('f_has_visa');
+    if ( divInv != undefined ) 
+    {
+        if ( checkBox.checked ) 
+        {
+            divInv.style.display = 'none';
+            document.getElementById('l_passport_scan').style.display = 'none';
+            document.getElementById('l_visa_city').style.display = 'none';
+            document.getElementById('l_visa_country').style.display = 'none';
+            labelHasVisa.style.display = 'block';
+        } 
+        else 
+        {
+            divInv.style.display = 'block';
+            document.getElementById('l_passport_scan').style.display = 'block';
+            document.getElementById('l_visa_city').style.display = 'block';
+            document.getElementById('l_visa_country').style.display = 'block';
+            labelHasVisa.style.display = 'none';
+            checkBoxHasVisa.checked = false;
+        }
+        hasVisa();
+    }
+}
 
-		divInv = document.getElementById('div_need_invitation');
-		checkBox = document.getElementById('f_notneed_invitation');
-		labelHasVisa = document.getElementById('l_has_visa');
-		checkBoxHasVisa = document.getElementById('f_has_visa');
-		if ( divInv != undefined ) {
-			if ( checkBox.checked  ) {
-				divInv.style.display = 'none';
-				document.getElementById('l_passport_scan').style.display = 'none';
-				document.getElementById('l_visa_city').style.display = 'none';
-				document.getElementById('l_visa_country').style.display = 'none';
-				labelHasVisa.style.display = 'block';
-			} else {
-				divInv.style.display = 'block';
-				document.getElementById('l_passport_scan').style.display = 'block';
-				document.getElementById('l_visa_city').style.display = 'block';
-				document.getElementById('l_visa_country').style.display = 'block';
-				labelHasVisa.style.display = 'none';
-				checkBoxHasVisa.checked = false;
-			}
-			hasVisa();
-		}
+function hasVisa() 
+{
+    divVisa = document.getElementById('div_has_visa');
+    checkBox = document.getElementById('f_has_visa');
+    if ( divVisa != undefined ) 
+    {
+        if ( checkBox.checked ) 
+        {
+            divVisa.style.display = 'block';
+        } 
+        else 
+        {
+            divVisa.style.display = 'none';
+        }
+    }
+}
 
-	}
-
-	function hasVisa () {
-
-		divVisa = document.getElementById('div_has_visa');
-		checkBox = document.getElementById('f_has_visa');
-		if ( divVisa != undefined ) {
-			if ( checkBox.checked  ) {
-				divVisa.style.display = 'block';
-			} else {
-				divVisa.style.display = 'none';
-			}
-		}
-
-	}
-
-	function changePaymentWay() {
-
-		sel = document.getElementById('f_payment_way_select');
-		txt = document.getElementById('f_payment_way');
-		if ( sel.options[sel.selectedIndex].value == 'other' ) {
-			txt.style.display = 'block';
-		} else {
-			txt.style.display = 'none';
-		}
-	}
-    //-->
+function changePaymentWay() 
+{
+    sel = document.getElementById('f_payment_way_select');
+    txt = document.getElementById('f_payment_way');
+    if ( sel.options[sel.selectedIndex].value == 'other' ) 
+    {
+        txt.style.display = 'block';
+    } 
+    else 
+    {
+        txt.style.display = 'none';
+    }
+}
+//-->
 </script>
 
 <form name="f1" action="winter.php" enctype="multipart/form-data"
